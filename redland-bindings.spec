@@ -2,13 +2,15 @@
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
-#
+%bcond_with	ruby	# build Ruby bindings
+
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	0.9.18.1
-Release:	0.1
+Release:	1
 License:	LGPL v2.1 or GPL v2 or MPL 1.1
 Group:		Libraries
 Source0:	http://www.redland.opensource.ac.uk/dist/source/%{name}-%{version}.tar.gz
@@ -104,6 +106,7 @@ Python bindings for Redland RDF library.
 %description -n python-redland -l pl
 Pythonowy interfejs do biblioteki Redland RDF.
 
+%if %{with ruby}
 %package -n ruby-redland
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
@@ -116,6 +119,7 @@ Ruby bindings for Redland RDF library.
 
 %description -n ruby-redland -l pl
 Interfejs jêzyka Ruby do biblioteki Redland RDF.
+%endif
 
 %package -n tcl-redland
 Summary:	Tcl bindings for Redland RDF library
@@ -145,7 +149,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 	--with-perl \
 	--with-php \
 	--with-python \
-	--with-ruby \
+	%{?with_ruby:--with-ruby} \
 	--with-tcl
 
 #	--with-ecma-cli=mono  -- TODO
@@ -200,10 +204,12 @@ rm -rf $RPM_BUILD_ROOT
 %{py_sitedir}/RDF.py
 %attr(755,root,root) %{py_sitedir}/Redland.so
 
+%if %{with ruby}
 %files -n ruby-redland
 %defattr(644,root,root,755)
 %doc docs/ruby.html
 %attr(755,root,root) %{ruby_archdir}/redland.so
+%endif
 
 %files -n tcl-redland
 %defattr(644,root,root,755)
