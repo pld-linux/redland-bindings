@@ -3,7 +3,7 @@
 # Conditional build:
 %bcond_with	java	# build Java bindings
 %bcond_with	ruby	# build Ruby bindings
-
+%bcond_with	php	# build PHP bindings
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
@@ -22,11 +22,11 @@ BuildRequires:	automake >= 1.7
 %{?with_java:BuildRequires:	jdk}
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
-BuildRequires:	php-devel
+%{?with_php:BuildRequires:	php-devel}
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 0.9.17
 BuildRequires:	rpm-perlprov >= 4.1-13
-BuildRequires:	ruby
+%{?with_ruby:BuildRequires:	ruby}
 BuildRequires:	swig >= 1.3.10
 BuildRequires:	tcl-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -79,7 +79,7 @@ Perl bindings for Redland RDF library.
 
 %description -n perl-RDF-Redland -l pl
 Perlowy interfejs do biblioteki Redland RDF.
-
+%if %{with php}
 %package -n php-redland
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
@@ -92,6 +92,7 @@ PHP bindings for Redland RDF library.
 
 %description -n php-redland -l pl
 Interfejs PHP do biblioteki Redland RDF.
+%endif
 
 %package -n python-redland
 Summary:	Python bindings for Redland RDF library
@@ -147,7 +148,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 	--disable-static \
 	%{?with_java:--with-java --with-jdk=%{_libdir}/java jdkdir=%{_libdir}/java} \
 	--with-perl \
-	--with-php \
+	%{?with_php:--with-php} \
 	--with-python \
 	%{?with_ruby:--with-ruby} \
 	--with-tcl
@@ -192,11 +193,12 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorarch}/auto/RDF/Redland/CORE/CORE.bs
 %attr(755,root,root) %{perl_vendorarch}/auto/RDF/Redland/CORE/CORE.so
 %{_mandir}/man3/RDF::Redland*.3pm*
-
+%if %{with php}
 %files -n php-redland
 %defattr(644,root,root,755)
 %doc docs/php.html
 %attr(755,root,root) %{_libdir}/php/redland.so
+%endif
 
 %files -n python-redland
 %defattr(644,root,root,755)
