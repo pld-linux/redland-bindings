@@ -2,38 +2,40 @@
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
-%bcond_with	ruby	# build Ruby bindings
+%bcond_without	ruby	# don't build Ruby bindings
 %bcond_with	php4	# build PHP4 bindings (default: PHP5)
-
+#
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	0.9.18.1
-Release:	1
-License:	LGPL v2.1 or GPL v2 or MPL 1.1
+Version:	0.9.19.1
+Release:	0.1
+License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
-Source0:	http://www.redland.opensource.ac.uk/dist/source/%{name}-%{version}.tar.gz
-# Source0-md5:	19f99c04da51705e8b1db5c969151af3
+Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
+# Source0-md5:	893a41b095d77012d80826fd7d6e9603
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
-URL:		http://www.redland.opensource.ac.uk/bindings/
+Patch2:		%{name}-php-tsrm.patch
+URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.7
 %{?with_java:BuildRequires:	jdk}
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 %if %{with php4}
-BuildRequires:	php4-cli
 BuildRequires:	php4-devel
 %else
-BuildRequires:	php-cli >= 3:5.0.0
 BuildRequires:	php-devel >= 3:5.0.0
 %endif
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 0.9.17
 BuildRequires:	rpm-perlprov >= 4.1-13
-%{?with_ruby:BuildRequires:	ruby}
+%if %{with ruby}
+BuildRequires:	ruby
+BuildRequires:	ruby-devel
+%endif
 BuildRequires:	swig >= 1.3.10
 BuildRequires:	tcl-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -87,7 +89,6 @@ Perl bindings for Redland RDF library.
 %description -n perl-RDF-Redland -l pl
 Perlowy interfejs do biblioteki Redland RDF.
 
-%if %{with php4}
 %package -n php4-redland
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
@@ -100,9 +101,7 @@ PHP bindings for Redland RDF library.
 
 %description -n php4-redland -l pl
 Interfejs PHP do biblioteki Redland RDF.
-%endif
 
-%if ! %{with php4}
 %package -n php-redland
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
@@ -115,7 +114,6 @@ PHP bindings for Redland RDF library.
 
 %description -n php-redland -l pl
 Interfejs PHP do biblioteki Redland RDF.
-%endif
 
 %package -n python-redland
 Summary:	Python bindings for Redland RDF library
@@ -130,7 +128,6 @@ Python bindings for Redland RDF library.
 %description -n python-redland -l pl
 Pythonowy interfejs do biblioteki Redland RDF.
 
-%if %{with ruby}
 %package -n ruby-redland
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
@@ -143,7 +140,6 @@ Ruby bindings for Redland RDF library.
 
 %description -n ruby-redland -l pl
 Interfejs jêzyka Ruby do biblioteki Redland RDF.
-%endif
 
 %package -n tcl-redland
 Summary:	Tcl bindings for Redland RDF library
@@ -162,6 +158,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -195,6 +192,8 @@ rm -rf $RPM_BUILD_ROOT
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
 rm $RPM_BUILD_ROOT%{py_sitescriptdir}/*.py
 
+%{?with_java:rm -f $RPM_BUILD_ROOT%{_libdir}/java/librdf-java.la}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -212,7 +211,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n perl-RDF-Redland
 %defattr(644,root,root,755)
-%doc docs/perl.html perl/README.txt
+%doc docs/perl.html
 %dir %{perl_vendorarch}/RDF
 %{perl_vendorarch}/RDF/Redland.pm
 %{perl_vendorarch}/RDF/Redland
