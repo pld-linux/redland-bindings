@@ -10,7 +10,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	0.9.19.1
-Release:	0.1
+Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
@@ -37,7 +37,8 @@ BuildRequires:	ruby
 BuildRequires:	ruby-devel
 %endif
 BuildRequires:	swig >= 1.3.10
-BuildRequires:	tcl-devel
+BuildRequires:	tcl-devel >= 8.4
+BuildRequires:	tcl-devel < 8.5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		ruby_archdir	%(ruby -r rbconfig -e 'print Config::CONFIG["archdir"]')
@@ -179,14 +180,18 @@ Interfejs Tcl do biblioteki Redland RDF.
 
 %{__make} \
 	MAKE_PL_OPTS='INSTALLDIRS=vendor OPTIMIZE="%{rpmcflags}"' \
-	javalibdir=%{_libdir}/java
+	javalibdir=%{_libdir}/java \
+	pythondir=%{py_sitedir} \
+	tcldir=%{_libdir}/tcl8.4
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	javalibdir=%{_libdir}/java
+	javalibdir=%{_libdir}/java \
+	pythondir=%{py_sitedir} \
+	tcldir=%{_libdir}/tcl8.4
 
 %py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
