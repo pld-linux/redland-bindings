@@ -1,16 +1,14 @@
-diff -Naur redland-bindings-0.9.18.1.orig/configure.ac redland-bindings-0.9.18.1/configure.ac
---- redland-bindings-0.9.18.1.orig/configure.ac	2004-12-25 14:21:52.280777840 +0100
-+++ redland-bindings-0.9.18.1/configure.ac	2004-12-25 15:15:15.157866512 +0100
-@@ -190,6 +190,9 @@
+--- redland-bindings-0.9.19.1/configure.ac.orig	2004-11-02 21:04:22.000000000 +0100
++++ redland-bindings-0.9.19.1/configure.ac	2005-01-09 00:14:21.283977360 +0100
+@@ -190,6 +190,8 @@
    PYTHON_LIB="${python_prefix}/lib/python${PYTHON_VERSION}/site-packages"
    AC_SUBST(PYTHON_LIB)
    AC_MSG_RESULT($PYTHON_LIB)
 +  PYTHON_SCRIPT="${python_prefix}/share/python${PYTHON_VERSION}/site-packages"
 +  AC_SUBST(PYTHON_SCRIPT)
-+  AC_MSG_RESULT($PYTHON_SCRIPT)
- else
-   # This allows 'make clean' in the python directory to work when
-   # python isn't available
+ 
+   if test `uname` = Darwin; then
+     PYTHON_LDFLAGS="-Wl,-F. -Wl,-F. -bundle"
 diff -Naur redland-bindings-0.9.18.1.orig/python/Makefile.am redland-bindings-0.9.18.1/python/Makefile.am
 --- redland-bindings-0.9.18.1.orig/python/Makefile.am	2004-12-25 14:21:52.305774040 +0100
 +++ redland-bindings-0.9.18.1/python/Makefile.am	2004-12-25 15:16:40.225934200 +0100
