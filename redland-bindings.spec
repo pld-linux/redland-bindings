@@ -19,7 +19,7 @@ Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
 URL:		http://www.redland.opensource.ac.uk/bindings/
 BuildRequires:	autoconf >= 2.53
-BuildRequires:	automake >= 1.7
+BuildRequires:	automake >= 1:1.7
 %{?with_java:BuildRequires:	jdk}
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
