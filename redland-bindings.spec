@@ -16,6 +16,7 @@ Group:		Libraries
 Source0:	http://www.redland.opensource.ac.uk/dist/source/%{name}-%{version}.tar.gz
 # Source0-md5:	19f99c04da51705e8b1db5c969151af3
 Patch0:		%{name}-install.patch
+Patch1:		%{name}-py_sitescriptdir.patch
 URL:		http://www.redland.opensource.ac.uk/bindings/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1.7
@@ -138,6 +139,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -165,6 +167,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	javalibdir=%{_libdir}/java
+
+%py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
+%py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
+rm $RPM_BUILD_ROOT%{py_sitescriptdir}/*.py
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -203,7 +209,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n python-redland
 %defattr(644,root,root,755)
 %doc docs/python.html docs/pydoc
-%{py_sitedir}/RDF.py
+%{py_sitescriptdir}/RDF.py[co]
 %attr(755,root,root) %{py_sitedir}/Redland.so
 
 %if %{with ruby}
