@@ -9,13 +9,13 @@
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	0.9.19.1
+Version:	1.0.0.1
 Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
-# Source0-md5:	893a41b095d77012d80826fd7d6e9603
-Patch0:		%{name}-install.patch
+# Source0-md5:	36a492eb233809b8f8a5e73d8b97677a
+#Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
 Patch2:		%{name}-php-tsrm.patch
 URL:		http://librdf.org/bindings/
@@ -157,7 +157,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 
@@ -186,6 +186,8 @@ Interfejs Tcl do biblioteki Redland RDF.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT/%{_libdir}/tcl8.4
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
