@@ -167,8 +167,8 @@ Interfejs Tcl do biblioteki Redland RDF.
 	--disable-static \
 	%{?with_java:--with-java --with-jdk=%{_libdir}/java jdkdir=%{_libdir}/java} \
 	--with-perl \
-	%{?with_php4:--with-php=%{_bindir}/php4.cli}
-	%{!?with_php4:--with-php=%{_bindir}/php.cli}
+	%{?with_php4:--with-php=%{_bindir}/php4.cli} \
+	%{!?with_php4:--with-php=%{_bindir}/php.cli} \
 	--with-python \
 	%{?with_ruby:--with-ruby} \
 	--with-tcl
