@@ -15,7 +15,7 @@ License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
 # Source0-md5:	36a492eb233809b8f8a5e73d8b97677a
-#Patch0:		%{name}-install.patch
+Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
 Patch2:		%{name}-php-tsrm.patch
 URL:		http://librdf.org/bindings/
@@ -30,7 +30,7 @@ BuildRequires:	php4-devel
 BuildRequires:	php-devel >= 3:5.0.0
 %endif
 BuildRequires:	python-devel
-BuildRequires:	redland-devel >= 0.9.17
+BuildRequires:	redland-devel >= 1.0.0
 BuildRequires:	rpm-perlprov >= 4.1-13
 %if %{with ruby}
 BuildRequires:	ruby
@@ -42,6 +42,7 @@ BuildRequires:	tcl-devel < 8.5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		ruby_archdir	%(ruby -r rbconfig -e 'print Config::CONFIG["archdir"]')
+%define		ruby_libdir	%(ruby -r rbconfig -e 'print Config::CONFIG["rubylibdir"]')
 
 %description
 Redland is a library that provides a high-level interface for the
@@ -157,7 +158,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 
 %prep
 %setup -q
-#%patch0 -p1
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 
@@ -186,8 +187,6 @@ Interfejs Tcl do biblioteki Redland RDF.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-install -d $RPM_BUILD_ROOT/%{_libdir}/tcl8.4
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -254,6 +253,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc docs/ruby.html
 %attr(755,root,root) %{ruby_archdir}/redland.so
+%{ruby_libdir}/rdf/redland.rb
+%{ruby_libdir}/rdf/redland
 %endif
 
 %files -n tcl-redland
