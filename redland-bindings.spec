@@ -23,8 +23,13 @@ BuildRequires:	automake >= 1.7
 %{?with_java:BuildRequires:	jdk}
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
-%{?with_php4:BuildRequires:	php4-devel}
-%{!?with_php4:BuildRequires:	php-devel}
+%if %{with php4}
+BuildRequires:	php4-cli
+BuildRequires:	php4-devel
+%else
+BuildRequires:	php-cli >= 3:5.0.0
+BuildRequires:	php-devel >= 3:5.0.0
+%endif
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 0.9.17
 BuildRequires:	rpm-perlprov >= 4.1-13
