@@ -8,13 +8,3 @@
  	if test -r $(TCL_PACKAGE).dylib; then \
  	  $(INSTALL_PROGRAM) $(TCL_PACKAGE).dylib $(DESTDIR)$(tcldir)/$(TCL_PACKAGE).dylib; \
  	else \
---- redland-bindings-0.9.18.1/ruby/Makefile.am.orig	2004-07-23 12:03:20.000000000 +0200
-+++ redland-bindings-0.9.18.1/ruby/Makefile.am	2004-08-04 23:38:56.209533848 +0200
-@@ -72,6 +72,7 @@
- 	touch ruby-redland-stamp
- 
- install-rubyDATA: $(ruby_DATA)
-+	install -d $(DESTDIR)$(rubydir)
- 	if test -r $(RUBY_PACKAGE).bundle; then \
- 	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubydir)/$(RUBY_PACKAGE).bundle; \
- 	else \
