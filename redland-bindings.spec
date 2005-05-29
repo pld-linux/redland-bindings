@@ -9,12 +9,12 @@
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.0.2
+Version:	1.0.1.1
 Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
-# Source0-md5:	624d9f30cb19a85988a64bd1b3987a71
+# Source0-md5:	58194589828c8bfb0694158666cb4774
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
 URL:		http://librdf.org/bindings/
@@ -183,6 +183,12 @@ Interfejs Tcl do biblioteki Redland RDF.
 	pythondir=%{py_sitedir} \
 	tcldir=%{_libdir}/tcl8.4
 
+%if %{with ruby}
+cd ruby
+rdoc --op ../rdoc
+cd ..
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -249,7 +255,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with ruby}
 %files -n ruby-redland
 %defattr(644,root,root,755)
-%doc docs/ruby.html
+%doc docs/ruby.html rdoc
 %attr(755,root,root) %{ruby_archdir}/redland.so
 %{ruby_libdir}/rdf/redland.rb
 %{ruby_libdir}/rdf/redland
