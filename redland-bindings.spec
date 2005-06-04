@@ -4,6 +4,7 @@
 %bcond_with	java	# build Java bindings
 %bcond_without	ruby	# don't build Ruby bindings
 %bcond_with	php4	# build PHP4 bindings (default: PHP5)
+%bcond_with	tcl85	# use tcl8.5 dirs
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
@@ -36,12 +37,22 @@ BuildRequires:	ruby
 BuildRequires:	ruby-devel
 %endif
 BuildRequires:	swig >= 1.3.10
+%if %{with tcl85}
+BuildRequires:	tcl-devel >= 8.5
+BuildRequires:	tcl-devel < 8.6
+%else
 BuildRequires:	tcl-devel >= 8.4
 BuildRequires:	tcl-devel < 8.5
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		ruby_archdir	%(ruby -r rbconfig -e 'print Config::CONFIG["archdir"]')
 %define		ruby_libdir	%(ruby -r rbconfig -e 'print Config::CONFIG["rubylibdir"]')
+%if %{with tcl85}
+%define		tcldir	%{_libdir}/tcl8.5
+%else
+%define		tcldir	%{_libdir}/tcl8.4
+%endif
 
 %description
 Redland is a library that provides a high-level interface for the
@@ -147,7 +158,13 @@ Summary:	Tcl bindings for Redland RDF library
 Summary(pl):	Interfejs Tcl do biblioteki Redland RDF
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	tcl
+%if %{with tcl85}
+Requires:	tcl >= 8.5
+Requires:	tcl < 8.6
+%else
+Requires:	tcl >= 8.4
+Requires:	tcl < 8.5
+%endif
 
 %description -n tcl-redland
 Tcl bindings for Redland RDF library.
@@ -181,7 +198,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 	MAKE_PL_OPTS='INSTALLDIRS=vendor OPTIMIZE="%{rpmcflags}"' \
 	javalibdir=%{_libdir}/java \
 	pythondir=%{py_sitedir} \
-	tcldir=%{_libdir}/tcl8.4
+	tcldir=%{tcldir}
 
 %if %{with ruby}
 cd ruby
@@ -196,7 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	javalibdir=%{_libdir}/java \
 	pythondir=%{py_sitedir} \
-	tcldir=%{_libdir}/tcl8.4
+	tcldir=%{tcldir}
 
 %py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
