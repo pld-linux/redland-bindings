@@ -10,12 +10,12 @@
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.1.1
+Version:	1.0.2.1
 Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
-# Source0-md5:	58194589828c8bfb0694158666cb4774
+# Source0-md5:	16fdb1f862ac08136d786aca7f75c80a
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
 URL:		http://librdf.org/bindings/
@@ -80,7 +80,6 @@ programu w razie potrzeby.
 Summary:	Java bindings for Redland RDF library
 Summary(pl):	Interfejs Javy do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
 Requires:	jre
 
 %description -n java-redland
@@ -93,7 +92,6 @@ Interfejs Javy do biblioteki Redland RDF.
 Summary:	Perl bindings for Redland RDF library
 Summary(pl):	Perlowy interfejs do biblioteki Redland RDF
 Group:		Development/Languages/Perl
-Requires:	%{name} = %{version}-%{release}
 
 %description -n perl-RDF-Redland
 Perl bindings for Redland RDF library.
@@ -105,7 +103,6 @@ Perlowy interfejs do biblioteki Redland RDF.
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
 Requires:	php4-common
 
 %description -n php4-redland
@@ -118,7 +115,6 @@ Interfejs PHP do biblioteki Redland RDF.
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
 Requires:	php-common >= 3:5.0.0
 
 %description -n php-redland
@@ -131,7 +127,6 @@ Interfejs PHP do biblioteki Redland RDF.
 Summary:	Python bindings for Redland RDF library
 Summary(pl):	Pythonowy interfejs do biblioteki Redland RDF
 Group:		Libraries/Python
-Requires:	%{name} = %{version}-%{release}
 %pyrequires_eq	python
 
 %description -n python-redland
@@ -144,7 +139,6 @@ Pythonowy interfejs do biblioteki Redland RDF.
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
 Requires:	ruby
 
 %description -n ruby-redland
@@ -157,7 +151,6 @@ Interfejs jêzyka Ruby do biblioteki Redland RDF.
 Summary:	Tcl bindings for Redland RDF library
 Summary(pl):	Interfejs Tcl do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
 %if %{with tcl85}
 Requires:	tcl >= 8.5
 Requires:	tcl < 8.6
