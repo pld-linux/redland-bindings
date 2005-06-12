@@ -267,6 +267,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc docs/ruby.html rdoc
 %attr(755,root,root) %{ruby_archdir}/redland.so
+%dir %{ruby_libdir}/rdf
 %{ruby_libdir}/rdf/redland.rb
 %{ruby_libdir}/rdf/redland
 %endif
