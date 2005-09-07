@@ -19,8 +19,6 @@ Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
 URL:		http://librdf.org/bindings/
-BuildRequires:	autoconf >= 2.53
-BuildRequires:	automake >= 1:1.7
 %{?with_java:BuildRequires:	jdk}
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
