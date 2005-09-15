@@ -1,0 +1,2 @@
+- compile .py to .py[co]
+- mv .py[co] from %py_sitedir to %py_sitescriptdir (Patch1)
