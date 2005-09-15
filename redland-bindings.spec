@@ -12,7 +12,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.2.1
-Release:	2
+Release:	3
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
@@ -108,7 +108,7 @@ Perlowy interfejs do biblioteki Redland RDF.
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
-Requires:	php4-common
+%{?requires_php_extension}
 
 %description -n php4-redland
 PHP bindings for Redland RDF library.
@@ -223,6 +223,8 @@ cat <<'EOF' > $RPM_BUILD_ROOT%{_sysconfdir}/php%{?with_php4:4}/conf.d/redland.in
 ; Enable redland bindings module
 extension=redland.so
 EOF
+# make .so executable so that rpm would add autodeps on .so files
+chmod +x $RPM_BUILD_ROOT%{phpdir}/*.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
