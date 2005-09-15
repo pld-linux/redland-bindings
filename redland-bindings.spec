@@ -1,4 +1,5 @@
-# TODO: C#/mono
+# TODO:
+# - C#/mono
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
@@ -11,7 +12,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.2.1
-Release:	1
+Release:	2
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
@@ -26,11 +27,14 @@ BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 %if %{with php4}
 BuildRequires:	php4-devel
+BuildRequires:	php4-cli
 %else
 BuildRequires:	php-devel >= 3:5.0.0
+BuildRequires:	php-cli >= 3:5.0.0
 %endif
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 1.0.0
+BuildRequires:	rpmbuild(macros) >= 1.238
 BuildRequires:	rpm-perlprov >= 4.1-13
 %if %{with ruby}
 BuildRequires:	ruby
@@ -53,6 +57,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %else
 %define		tcldir	%{_libdir}/tcl8.4
 %endif
+%define		phpdir	%(php-config --extension-dir 2>/dev/null)
 
 %description
 Redland is a library that provides a high-level interface for the
@@ -115,7 +120,7 @@ Interfejs PHP do biblioteki Redland RDF.
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
-Requires:	php-common >= 3:5.0.0
+%{?requires_php_extension}
 
 %description -n php-redland
 PHP bindings for Redland RDF library.
@@ -179,8 +184,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 	--disable-static \
 	%{?with_java:--with-java --with-jdk=%{_libdir}/java jdkdir=%{_libdir}/java} \
 	--with-perl \
-	%{?with_php4:--with-php=%{_bindir}/php4.cli} \
-	%{!?with_php4:--with-php=%{_bindir}/php.cli} \
+	--with-php=%{_bindir}/php%{?with_php4:4}.cli \
 	--with-python \
 	%{?with_ruby:--with-ruby} \
 	--with-tcl
@@ -214,8 +218,24 @@ rm $RPM_BUILD_ROOT%{py_sitescriptdir}/*.py
 
 %{?with_java:rm -f $RPM_BUILD_ROOT%{_libdir}/java/librdf-java.la}
 
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/php%{?with_php4:4}/conf.d,%{phpdir}}
+cat <<'EOF' > $RPM_BUILD_ROOT%{_sysconfdir}/php%{?with_php4:4}/conf.d/redland.ini
+; Enable redland bindings module
+extension=redland.so
+EOF
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post -n php%{?with_php4:4}-redland
+[ ! -f /etc/apache/conf.d/??_mod_php.%{?with_php4:4}conf ] || %service -q apache restart
+[ ! -f /etc/httpd/httpd.conf/??_mod_php%{?with_php4:4}.conf ] || %service -q httpd restart
+
+%postun -n php%{?with_php4:4}-redland
+if [ "$1" = 0 ]; then
+	[ ! -f /etc/apache/conf.d/??_mod_php%{?with_php4:4}.conf ] || %service -q apache restart
+	[ ! -f /etc/httpd/httpd.conf/??_mod_php%{?with_php4:4}.conf ] || %service -q httpd restart
+fi
 
 %files
 %defattr(644,root,root,755)
@@ -242,19 +262,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{perl_vendorarch}/auto/RDF/Redland/CORE/CORE.so
 %{_mandir}/man3/RDF::Redland*.3pm*
 
-%if %{with php4}
-%files -n php4-redland
+%files -n php%{?with_php4:4}-redland
 %defattr(644,root,root,755)
 %doc docs/php.html
-%attr(755,root,root) %{_libdir}/php4/redland.so
-%endif
-
-%if ! %{with php4}
-%files -n php-redland
-%defattr(644,root,root,755)
-%doc docs/php.html
-%attr(755,root,root) %{_libdir}/php/redland.so
-%endif
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/php%{?with_php4:4}/conf.d/redland.ini
+%attr(755,root,root) %{phpdir}/redland.so
 
 %files -n python-redland
 %defattr(644,root,root,755)
