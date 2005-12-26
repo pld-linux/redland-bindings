@@ -4,7 +4,7 @@
 # Conditional build:
 %bcond_with	java	# build Java bindings
 %bcond_without	ruby	# don't build Ruby bindings
-%bcond_with	php4	# build PHP4 bindings (default: PHP5)
+%bcond_with	php4	# build PHP4 bindings (default PHP5)
 %bcond_with	tcl85	# use tcl8.5 dirs
 #
 %include	/usr/lib/rpm/macros.perl
@@ -26,32 +26,30 @@ BuildRequires:	automake >= 1:1.7
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 %if %{with php4}
-BuildRequires:	php4-devel
 BuildRequires:	php4-cli
+BuildRequires:	php4-devel
 %else
-BuildRequires:	php-devel >= 3:5.0.0
 BuildRequires:	php-cli >= 3:5.0.0
+BuildRequires:	php-devel >= 3:5.0.0
 %endif
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 1.0.0
-BuildRequires:	rpmbuild(macros) >= 1.238
 BuildRequires:	rpm-perlprov >= 4.1-13
+BuildRequires:	rpmbuild(macros) >= 1.272
 %if %{with ruby}
 BuildRequires:	ruby
 BuildRequires:	ruby-devel
 %endif
 BuildRequires:	swig >= 1.3.10
 %if %{with tcl85}
-BuildRequires:	tcl-devel >= 8.5
 BuildRequires:	tcl-devel < 8.6
+BuildRequires:	tcl-devel >= 8.5
 %else
-BuildRequires:	tcl-devel >= 8.4
 BuildRequires:	tcl-devel < 8.5
+BuildRequires:	tcl-devel >= 8.4
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		ruby_archdir	%(ruby -r rbconfig -e 'print Config::CONFIG["archdir"]')
-%define		ruby_libdir	%(ruby -r rbconfig -e 'print Config::CONFIG["rubylibdir"]')
 %if %{with tcl85}
 %define		tcldir	%{_libdir}/tcl8.5
 %else
@@ -157,11 +155,11 @@ Summary:	Tcl bindings for Redland RDF library
 Summary(pl):	Interfejs Tcl do biblioteki Redland RDF
 Group:		Libraries
 %if %{with tcl85}
-Requires:	tcl >= 8.5
 Requires:	tcl < 8.6
+Requires:	tcl >= 8.5
 %else
-Requires:	tcl >= 8.4
 Requires:	tcl < 8.5
+Requires:	tcl >= 8.4
 %endif
 
 %description -n tcl-redland
