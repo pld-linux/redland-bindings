@@ -37,7 +37,6 @@ BuildRequires:	redland-devel >= 1.0.0
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.272
 %if %{with ruby}
-BuildRequires:	ruby-modules
 BuildRequires:	ruby-devel
 %endif
 BuildRequires:	swig >= 1.3.10
