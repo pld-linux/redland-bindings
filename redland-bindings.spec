@@ -12,7 +12,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.2.1
-Release:	6
+Release:	7
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
@@ -37,7 +37,7 @@ BuildRequires:	redland-devel >= 1.0.0
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.272
 %if %{with ruby}
-BuildRequires:	ruby
+BuildRequires:	ruby-modules
 BuildRequires:	ruby-devel
 %endif
 BuildRequires:	swig >= 1.3.10
@@ -142,7 +142,7 @@ Pythonowy interfejs do biblioteki Redland RDF.
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
 Group:		Libraries
-Requires:	ruby
+Requires:	ruby-modules
 
 %description -n ruby-redland
 Ruby bindings for Redland RDF library.
