@@ -35,7 +35,7 @@ BuildRequires:	php-devel >= 3:5.0.0
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 1.0.0
 BuildRequires:	rpm-perlprov >= 4.1-13
-BuildRequires:	rpmbuild(macros) >= 1.272
+BuildRequires:	rpmbuild(macros) >= 1.277
 %if %{with ruby}
 BuildRequires:	ruby-devel
 %endif
@@ -141,7 +141,7 @@ Pythonowy interfejs do biblioteki Redland RDF.
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
 Group:		Libraries
-Requires:	ruby-modules
+%ruby_mod_ver_requires_eq
 
 %description -n ruby-redland
 Ruby bindings for Redland RDF library.
