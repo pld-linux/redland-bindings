@@ -141,7 +141,7 @@ Pythonowy interfejs do biblioteki Redland RDF.
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
 Group:		Libraries
-%ruby_mod_ver_requires_eq
+%{?ruby_mod_ver_requires_eq}
 
 %description -n ruby-redland
 Ruby bindings for Redland RDF library.
