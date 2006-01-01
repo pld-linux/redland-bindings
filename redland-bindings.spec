@@ -12,7 +12,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.2.1
-Release:	7
+Release:	8
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
@@ -278,9 +278,9 @@ fi
 %defattr(644,root,root,755)
 %doc docs/ruby.html rdoc
 %attr(755,root,root) %{ruby_archdir}/redland.so
-%dir %{ruby_libdir}/rdf
-%{ruby_libdir}/rdf/redland.rb
-%{ruby_libdir}/rdf/redland
+%dir %{ruby_rubylibdir}/rdf
+%{ruby_rubylibdir}/rdf/redland.rb
+%{ruby_rubylibdir}/rdf/redland
 %endif
 
 %files -n tcl-redland
