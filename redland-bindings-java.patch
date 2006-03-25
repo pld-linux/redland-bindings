@@ -1,0 +1,17 @@
+--- redland-bindings-1.0.3.1/java/org/librdf/redland/World.java.orig	2006-03-05 09:22:09.000000000 +0100
++++ redland-bindings-1.0.3.1/java/org/librdf/redland/World.java	2006-03-19 18:15:21.326364250 +0100
+@@ -46,12 +46,12 @@
+ 
+   public String versionString() 
+     {
+-      return core.get_librdf_version_string();
++      return core.librdf_version_string_get();
+     }
+ 
+   public String copyrightString() 
+     {
+-      return core.get_librdf_copyright_string();
++      return core.librdf_copyright_string_get();
+     }
+ 
+ /*
