@@ -1,0 +1,68 @@
+--- redland-bindings-1.0.3.1/configure.ac.orig	2006-03-09 17:52:50.000000000 +0100
++++ redland-bindings-1.0.3.1/configure.ac	2006-03-25 14:11:44.494844500 +0100
+@@ -344,7 +344,7 @@
+ 
+ 
+ 
+-with_ecma_cla=
++with_ecma_cli=
+ dnl Pick an ECMA CLI implementation
+ AC_ARG_WITH(ecma-cli, [  --with-ecma-cli=SYSTEM  Enable ECMA CLI interface - mono, dotgnu (default=no)], ecma_cli_name="$withval", ecma_cli_name="no")
+ 
+@@ -362,7 +362,7 @@
+ AC_MSG_RESULT($result)
+ 
+ AC_MSG_CHECKING(ECMA CLI implementations to use)
+-with_ecma_cli=no
++ecma_cli=no
+ CLIRUN=
+ CSHARPC=
+ CSHARPCFLAGS=
+@@ -374,7 +374,8 @@
+         CLIRUN=$MONO
+         CSHARPC=$MCS
+         CSHARPCFLAGS="-debug+"
+-        CLI_PREFIX=`$PKG_CONFIG mono --variable=prefix`
++        CLI_PREFIX=$(cd `$PKG_CONFIG mono --variable=prefix`; pwd)
++	INSTALL_CSHARP=install-mono
+         ecma_cli=Mono
+       fi
+       ;;
+@@ -385,6 +386,7 @@
+         CSHARPC=$CSCC
+         CSHARPCFLAGS="-g"
+         CLI_PREFIX=/usr
++	INSTALL_CSHARP=install-pnet
+         ecma_cli=dotGNU
+       fi
+       ;;
+@@ -402,8 +404,9 @@
+ AC_SUBST(CSHARPCFLAGS)
+ AC_SUBST(CLI_PREFIX)
+ 
+-if test "$with_ecma_cli" != no; then
+-  languages="$languages C#($ecma_cli)"
++AC_SUBST(INSTALL_CSHARP)
++if test "$ecma_cli" != no; then
++  languages="$languages csharp"
+ fi
+ 
+ 
+--- redland-bindings-1.0.3.1/csharp/Makefile.am.orig	2006-03-15 06:04:17.000000000 +0100
++++ redland-bindings-1.0.3.1/csharp/Makefile.am	2006-03-25 14:10:11.649042000 +0100
+@@ -86,13 +86,13 @@
+ 	$(CSHARP_LINK) test.cs -target:exe -r:Redland.dll -out:$@
+ 
+ install-csharp: build-csharp-stamp
+-	$(INSTALL_PROGRAM) $(CSHARP_DLL) @libdir@
++	$(INSTALL_PROGRAM) $(CSHARP_DLL) $(DESTDIR)@libdir@
+ 
+ clean-local:
+ 	rm -f build-csharp-stamp $(CSHARP_DLL)
+ 
+ # See this is the fake bit
+-install-fakeDATA: install-csharp
++install-fakeDATA: $(INSTALL_CSHARP)
+ 
+ 
+ #MONO_GACUTIL=$(CLIRUN) $(CLI_PREFIX)/gacutil.exe
