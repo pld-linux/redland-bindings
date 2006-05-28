@@ -6,7 +6,7 @@
 %bcond_without	ruby	# don't build Ruby bindings
 %bcond_without	tcl	# don't build (any) Tcl bindings
 %bcond_with	php4	# build PHP4 bindings (default PHP5)
-%bcond_with	tcl85	# use tcl8.5 dirs
+%bcond_without	tcl85	# use tcl8.4 instead of tcl8.5 dirs
 #
 %ifarch i386 alpha sparc sparcv9 sparc64
 %undefine	with_mono
@@ -16,23 +16,22 @@
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.3.1
+Version:	1.0.4.1
 Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
-# Source0-md5:	aae69923e342afad8963b08c3c7c7749
+# Source0-md5:	3ad6d05afe2250b3dc885eb0369ea8f0
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
-Patch2:		%{name}-java.patch
-Patch3:		%{name}-csharp.patch
+Patch2:		%{name}-csharp.patch
 URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.7
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	python-devel
-BuildRequires:	redland-devel >= 1.0.3
+BuildRequires:	redland-devel >= 1.0.4
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.277
 %{?with_java:BuildRequires:	jdk}
@@ -198,7 +197,6 @@ Interfejs Tcl do biblioteki Redland RDF.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 # generated using broken swig
 rm -f php/{php_redland.h,redland_wrap.c}
