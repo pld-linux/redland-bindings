@@ -1,0 +1,16 @@
+- fix macro name - %ruby_libdir -> %ruby_rubylibdir
+- rel. 8, STBR
+- now builds, but warnings expose include files and definitions clash:
+
+ In file included from /usr/lib/ruby/1.8/i686-linux/ruby.h:24,
+                  from redland_wrap.c:24:
+ /usr/lib/ruby/1.8/i686-linux/config.h:2:1: warning: "PACKAGE_NAME" redefined
+ <command line>:4:1: warning: this is the location of the previous definition
+ /usr/lib/ruby/1.8/i686-linux/config.h:3:1: warning: "PACKAGE_TARNAME" redefined
+ <command line>:5:1: warning: this is the location of the previous definition
+ /usr/lib/ruby/1.8/i686-linux/config.h:4:1: warning: "PACKAGE_VERSION" redefined
+ <command line>:6:1: warning: this is the location of the previous definition
+ /usr/lib/ruby/1.8/i686-linux/config.h:5:1: warning: "PACKAGE_STRING" redefined
+ <command line>:7:1: warning: this is the location of the previous definition
+ /usr/lib/ruby/1.8/i686-linux/config.h:6:1: warning: "PACKAGE_BUGREPORT" redefined
+ <command line>:8:1: warning: this is the location of the previous definition
