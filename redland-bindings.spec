@@ -33,7 +33,7 @@ BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 1.0.4
 BuildRequires:	rpm-perlprov >= 4.1-13
-BuildRequires:	rpmbuild(macros) >= 1.277
+BuildRequires:	rpmbuild(macros) >= 1.322
 %{?with_java:BuildRequires:	jdk}
 %if %{with mono}
 BuildRequires:	mono-csharp
