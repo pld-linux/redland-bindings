@@ -14,7 +14,7 @@
 %{?with_mono:%include	/usr/lib/rpm/macros.mono}
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
-Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
+Summary(pl.UTF-8):   WiÄ…zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.5.1
 Release:	1
@@ -79,103 +79,103 @@ Python, Ruby and Tcl. Several classes providing functionality such as
 for parsers, storage are built as modules that can be loaded at
 compile or run-time as required.
 
-%description -l pl
-Redland to biblioteka dostarczaj±ca wysokopoziomowy interfejs dla
-szkieletu opisu zasobów (RDF - Resource Description Framework),
-umo¿liwiaj±ca na przetwarzanie grafów XML z RDF, przechowywanie,
+%description -l pl.UTF-8
+Redland to biblioteka dostarczajÄ…ca wysokopoziomowy interfejs dla
+szkieletu opisu zasobÃ³w (RDF - Resource Description Framework),
+umoÅ¼liwiajÄ…ca na przetwarzanie grafÃ³w XML z RDF, przechowywanie,
 odpytywanie i obrabianie ich. Redland implementuje wszystkie idee RDF
-we w³asnych klasach poprzez API oparte na obiektach, maj±cych
-odzwierciedlenie w API dla poszczególnych jêzyków - aktualnie C#, Java
-Perl, PHP, Python, Ruby i Tcl. Kilka klas dostarczaj±cych
-funkcjonalno¶æ dla parserów i przechowywania danych jest budowana jako
-modu³y, które mog± byæ wczytywane w czasie kompilacji lub dzia³ania
+we wÅ‚asnych klasach poprzez API oparte na obiektach, majÄ…cych
+odzwierciedlenie w API dla poszczegÃ³lnych jÄ™zykÃ³w - aktualnie C#, Java
+Perl, PHP, Python, Ruby i Tcl. Kilka klas dostarczajÄ…cych
+funkcjonalnoÅ›Ä‡ dla parserÃ³w i przechowywania danych jest budowana jako
+moduÅ‚y, ktÃ³re mogÄ… byÄ‡ wczytywane w czasie kompilacji lub dziaÅ‚ania
 programu w razie potrzeby.
 
 %package -n dotnet-redland
 Summary:	Mono C# bindings for Redland RDF library
-Summary(pl):	Interfejs Mono C# do biblioteki Redland RDF
+Summary(pl.UTF-8):   Interfejs Mono C# do biblioteki Redland RDF
 Group:		Libraries
 
 %description -n dotnet-redland
 Mono C# bindings for Redland RDF library.
 
-%description -n dotnet-redland -l pl
+%description -n dotnet-redland -l pl.UTF-8
 Interfejs Mono C# do biblioteki Redland RDF.
 
 %package -n java-redland
 Summary:	Java bindings for Redland RDF library
-Summary(pl):	Interfejs Javy do biblioteki Redland RDF
+Summary(pl.UTF-8):   Interfejs Javy do biblioteki Redland RDF
 Group:		Libraries
 Requires:	jre
 
 %description -n java-redland
 Java bindings for Redland RDF library.
 
-%description -n java-redland -l pl
+%description -n java-redland -l pl.UTF-8
 Interfejs Javy do biblioteki Redland RDF.
 
 %package -n perl-RDF-Redland
 Summary:	Perl bindings for Redland RDF library
-Summary(pl):	Perlowy interfejs do biblioteki Redland RDF
+Summary(pl.UTF-8):   Perlowy interfejs do biblioteki Redland RDF
 Group:		Development/Languages/Perl
 
 %description -n perl-RDF-Redland
 Perl bindings for Redland RDF library.
 
-%description -n perl-RDF-Redland -l pl
+%description -n perl-RDF-Redland -l pl.UTF-8
 Perlowy interfejs do biblioteki Redland RDF.
 
 %package -n php4-redland
 Summary:	PHP bindings for Redland RDF library
-Summary(pl):	Interfejs PHP do biblioteki Redland RDF
+Summary(pl.UTF-8):   Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
 
 %description -n php4-redland
 PHP bindings for Redland RDF library.
 
-%description -n php4-redland -l pl
+%description -n php4-redland -l pl.UTF-8
 Interfejs PHP do biblioteki Redland RDF.
 
 %package -n php-redland
 Summary:	PHP bindings for Redland RDF library
-Summary(pl):	Interfejs PHP do biblioteki Redland RDF
+Summary(pl.UTF-8):   Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
 
 %description -n php-redland
 PHP bindings for Redland RDF library.
 
-%description -n php-redland -l pl
+%description -n php-redland -l pl.UTF-8
 Interfejs PHP do biblioteki Redland RDF.
 
 %package -n python-redland
 Summary:	Python bindings for Redland RDF library
-Summary(pl):	Pythonowy interfejs do biblioteki Redland RDF
+Summary(pl.UTF-8):   Pythonowy interfejs do biblioteki Redland RDF
 Group:		Libraries/Python
 %pyrequires_eq	python
 
 %description -n python-redland
 Python bindings for Redland RDF library.
 
-%description -n python-redland -l pl
+%description -n python-redland -l pl.UTF-8
 Pythonowy interfejs do biblioteki Redland RDF.
 
 %package -n ruby-redland
 Summary:	Ruby bindings for Redland RDF library
-Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
+Summary(pl.UTF-8):   Interfejs jÄ™zyka Ruby do biblioteki Redland RDF
 Group:		Libraries
 %{?ruby_mod_ver_requires_eq}
 
 %description -n ruby-redland
 Ruby bindings for Redland RDF library.
 
-%description -n ruby-redland -l pl
-Interfejs jêzyka Ruby do biblioteki Redland RDF.
+%description -n ruby-redland -l pl.UTF-8
+Interfejs jÄ™zyka Ruby do biblioteki Redland RDF.
 
 %package -n tcl-redland
 Summary:	Tcl bindings for Redland RDF library
-Summary(pl):	Interfejs Tcl do biblioteki Redland RDF
+Summary(pl.UTF-8):   Interfejs Tcl do biblioteki Redland RDF
 Group:		Libraries
 %if %{with tcl85}
 Requires:	tcl < 8.6
@@ -188,7 +188,7 @@ Requires:	tcl >= 8.4
 %description -n tcl-redland
 Tcl bindings for Redland RDF library.
 
-%description -n tcl-redland -l pl
+%description -n tcl-redland -l pl.UTF-8
 Interfejs Tcl do biblioteki Redland RDF.
 
 %prep
