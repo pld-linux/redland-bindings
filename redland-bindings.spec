@@ -1,23 +1,24 @@
-# TODO: C#/mono
+# TODO:
+# - C#/mono
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
 %bcond_without	ruby	# don't build Ruby bindings
-%bcond_with	php4	# build PHP4 bindings (default: PHP5)
+%bcond_with	php4	# build PHP4 bindings (default PHP5)
+%bcond_with	tcl85	# use tcl8.5 dirs
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.0.1
-Release:	1
+Version:	1.0.2.1
+Release:	9
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://librdf.org/dist/source/%{name}-%{version}.tar.gz
-# Source0-md5:	36a492eb233809b8f8a5e73d8b97677a
-#Patch0:		%{name}-install.patch
+# Source0-md5:	16fdb1f862ac08136d786aca7f75c80a
+Patch0:		%{name}-install.patch
 Patch1:		%{name}-py_sitescriptdir.patch
-Patch2:		%{name}-php-tsrm.patch
 URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.7
@@ -25,23 +26,35 @@ BuildRequires:	automake >= 1:1.7
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 %if %{with php4}
+BuildRequires:	php4-cli
 BuildRequires:	php4-devel
 %else
+BuildRequires:	php-cli >= 3:5.0.0
 BuildRequires:	php-devel >= 3:5.0.0
 %endif
 BuildRequires:	python-devel
-BuildRequires:	redland-devel >= 0.9.17
+BuildRequires:	redland-devel >= 1.0.0
 BuildRequires:	rpm-perlprov >= 4.1-13
+BuildRequires:	rpmbuild(macros) >= 1.277
 %if %{with ruby}
-BuildRequires:	ruby
 BuildRequires:	ruby-devel
 %endif
 BuildRequires:	swig >= 1.3.10
-BuildRequires:	tcl-devel >= 8.4
+%if %{with tcl85}
+BuildRequires:	tcl-devel < 8.6
+BuildRequires:	tcl-devel >= 8.5
+%else
 BuildRequires:	tcl-devel < 8.5
+BuildRequires:	tcl-devel >= 8.4
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		ruby_archdir	%(ruby -r rbconfig -e 'print Config::CONFIG["archdir"]')
+%if %{with tcl85}
+%define		tcldir	%{_libdir}/tcl8.5
+%else
+%define		tcldir	%{_libdir}/tcl8.4
+%endif
+%define		phpdir	%(php-config --extension-dir 2>/dev/null)
 
 %description
 Redland is a library that provides a high-level interface for the
@@ -69,7 +82,6 @@ programu w razie potrzeby.
 Summary:	Java bindings for Redland RDF library
 Summary(pl):	Interfejs Javy do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
 Requires:	jre
 
 %description -n java-redland
@@ -82,7 +94,6 @@ Interfejs Javy do biblioteki Redland RDF.
 Summary:	Perl bindings for Redland RDF library
 Summary(pl):	Perlowy interfejs do biblioteki Redland RDF
 Group:		Development/Languages/Perl
-Requires:	%{name} = %{version}-%{release}
 
 %description -n perl-RDF-Redland
 Perl bindings for Redland RDF library.
@@ -94,8 +105,7 @@ Perlowy interfejs do biblioteki Redland RDF.
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	php4-common
+%{?requires_php_extension}
 
 %description -n php4-redland
 PHP bindings for Redland RDF library.
@@ -107,8 +117,7 @@ Interfejs PHP do biblioteki Redland RDF.
 Summary:	PHP bindings for Redland RDF library
 Summary(pl):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	php-common >= 3:5.0.0
+%{?requires_php_extension}
 
 %description -n php-redland
 PHP bindings for Redland RDF library.
@@ -120,7 +129,6 @@ Interfejs PHP do biblioteki Redland RDF.
 Summary:	Python bindings for Redland RDF library
 Summary(pl):	Pythonowy interfejs do biblioteki Redland RDF
 Group:		Libraries/Python
-Requires:	%{name} = %{version}-%{release}
 %pyrequires_eq	python
 
 %description -n python-redland
@@ -133,8 +141,7 @@ Pythonowy interfejs do biblioteki Redland RDF.
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	ruby
+%{?ruby_mod_ver_requires_eq}
 
 %description -n ruby-redland
 Ruby bindings for Redland RDF library.
@@ -146,8 +153,13 @@ Interfejs jêzyka Ruby do biblioteki Redland RDF.
 Summary:	Tcl bindings for Redland RDF library
 Summary(pl):	Interfejs Tcl do biblioteki Redland RDF
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	tcl
+%if %{with tcl85}
+Requires:	tcl < 8.6
+Requires:	tcl >= 8.5
+%else
+Requires:	tcl < 8.5
+Requires:	tcl >= 8.4
+%endif
 
 %description -n tcl-redland
 Tcl bindings for Redland RDF library.
@@ -157,9 +169,8 @@ Interfejs Tcl do biblioteki Redland RDF.
 
 %prep
 %setup -q
-#%patch0 -p1
+%patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -170,8 +181,7 @@ Interfejs Tcl do biblioteki Redland RDF.
 	--disable-static \
 	%{?with_java:--with-java --with-jdk=%{_libdir}/java jdkdir=%{_libdir}/java} \
 	--with-perl \
-	%{?with_php4:--with-php=%{_bindir}/php4.cli} \
-	%{!?with_php4:--with-php=%{_bindir}/php.cli} \
+	--with-php=%{_bindir}/php%{?with_php4:4}.cli \
 	--with-python \
 	%{?with_ruby:--with-ruby} \
 	--with-tcl
@@ -182,18 +192,22 @@ Interfejs Tcl do biblioteki Redland RDF.
 	MAKE_PL_OPTS='INSTALLDIRS=vendor OPTIMIZE="%{rpmcflags}"' \
 	javalibdir=%{_libdir}/java \
 	pythondir=%{py_sitedir} \
-	tcldir=%{_libdir}/tcl8.4
+	tcldir=%{tcldir}
+
+%if %{with ruby}
+cd ruby
+rdoc --op ../rdoc
+cd ..
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-install -d $RPM_BUILD_ROOT/%{_libdir}/tcl8.4
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	javalibdir=%{_libdir}/java \
 	pythondir=%{py_sitedir} \
-	tcldir=%{_libdir}/tcl8.4
+	tcldir=%{tcldir}
 
 %py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
@@ -201,8 +215,26 @@ rm $RPM_BUILD_ROOT%{py_sitescriptdir}/*.py
 
 %{?with_java:rm -f $RPM_BUILD_ROOT%{_libdir}/java/librdf-java.la}
 
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/php%{?with_php4:4}/conf.d,%{phpdir}}
+cat <<'EOF' > $RPM_BUILD_ROOT%{_sysconfdir}/php%{?with_php4:4}/conf.d/redland.ini
+; Enable redland bindings module
+extension=redland.so
+EOF
+# make .so executable so that rpm would add autodeps on .so files
+chmod +x $RPM_BUILD_ROOT%{phpdir}/*.so
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post -n php%{?with_php4:4}-redland
+[ ! -f /etc/apache/conf.d/??_mod_php.%{?with_php4:4}conf ] || %service -q apache restart
+[ ! -f /etc/httpd/httpd.conf/??_mod_php%{?with_php4:4}.conf ] || %service -q httpd restart
+
+%postun -n php%{?with_php4:4}-redland
+if [ "$1" = 0 ]; then
+	[ ! -f /etc/apache/conf.d/??_mod_php%{?with_php4:4}.conf ] || %service -q apache restart
+	[ ! -f /etc/httpd/httpd.conf/??_mod_php%{?with_php4:4}.conf ] || %service -q httpd restart
+fi
 
 %files
 %defattr(644,root,root,755)
@@ -229,19 +261,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{perl_vendorarch}/auto/RDF/Redland/CORE/CORE.so
 %{_mandir}/man3/RDF::Redland*.3pm*
 
-%if %{with php4}
-%files -n php4-redland
+%files -n php%{?with_php4:4}-redland
 %defattr(644,root,root,755)
 %doc docs/php.html
-%attr(755,root,root) %{_libdir}/php4/redland.so
-%endif
-
-%if ! %{with php4}
-%files -n php-redland
-%defattr(644,root,root,755)
-%doc docs/php.html
-%attr(755,root,root) %{_libdir}/php/redland.so
-%endif
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/php%{?with_php4:4}/conf.d/redland.ini
+%attr(755,root,root) %{phpdir}/redland.so
 
 %files -n python-redland
 %defattr(644,root,root,755)
@@ -252,8 +276,11 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with ruby}
 %files -n ruby-redland
 %defattr(644,root,root,755)
-%doc docs/ruby.html
+%doc docs/ruby.html rdoc
 %attr(755,root,root) %{ruby_archdir}/redland.so
+%dir %{ruby_rubylibdir}/rdf
+%{ruby_rubylibdir}/rdf/redland.rb
+%{ruby_rubylibdir}/rdf/redland
 %endif
 
 %files -n tcl-redland
