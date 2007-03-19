@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
-%bcond_without	mono	# don't build mono bindings
+%bcond_with	mono	# don't build mono bindings
 %bcond_without	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
 %bcond_without	tcl	# don't build (any) Tcl bindings
@@ -17,7 +17,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.5.1
-Release:	1
+Release:	2
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
