@@ -20,7 +20,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.5.1
-Release:	2
+Release:	3
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
@@ -209,7 +209,7 @@ rm -f php/{php_redland.h,redland_wrap.c}
 %{__automake}
 %configure \
 	--disable-static \
-	%{?with_mono:--with-ecma-cli=mono} \
+	--with-ecma-cli=%{?with_mono:mono}%{!?with_mono:no} \
 	%{?with_java:--with-java --with-jdk=%{_libdir}/java jdkdir=%{_libdir}/java} \
 	--with-perl \
 %if %{with php}
