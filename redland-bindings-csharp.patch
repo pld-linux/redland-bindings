@@ -1,15 +1,14 @@
---- redland-bindings-1.0.3.1/configure.ac.orig	2006-03-09 17:52:50.000000000 +0100
-+++ redland-bindings-1.0.3.1/configure.ac	2006-03-25 14:11:44.494844500 +0100
-@@ -344,7 +344,7 @@
+--- redland-bindings-1.0.5.1.orig/configure.ac	2007-03-19 11:07:04.384529443 +0200
++++ redland-bindings-1.0.5.1/configure.ac	2007-03-19 11:07:22.864944929 +0200
+@@ -363,7 +363,6 @@
  
  
  
 -with_ecma_cla=
-+with_ecma_cli=
  dnl Pick an ECMA CLI implementation
  AC_ARG_WITH(ecma-cli, [  --with-ecma-cli=SYSTEM  Enable ECMA CLI interface - mono, dotgnu (default=no)], ecma_cli_name="$withval", ecma_cli_name="no")
  
-@@ -362,7 +362,7 @@
+@@ -381,7 +380,7 @@
  AC_MSG_RESULT($result)
  
  AC_MSG_CHECKING(ECMA CLI implementations to use)
@@ -18,7 +17,7 @@
  CLIRUN=
  CSHARPC=
  CSHARPCFLAGS=
-@@ -374,7 +374,8 @@
+@@ -393,7 +392,8 @@
          CLIRUN=$MONO
          CSHARPC=$MCS
          CSHARPCFLAGS="-debug+"
@@ -28,7 +27,7 @@
          ecma_cli=Mono
        fi
        ;;
-@@ -385,6 +386,7 @@
+@@ -404,11 +404,13 @@
          CSHARPC=$CSCC
          CSHARPCFLAGS="-g"
          CLI_PREFIX=/usr
@@ -36,7 +35,13 @@
          ecma_cli=dotGNU
        fi
        ;;
-@@ -402,8 +404,9 @@
+ 
+     no)
++      break
+       ;;
+     *)
+       AC_MSG_ERROR(No such ECMA CLI implementation $name)
+@@ -421,8 +423,9 @@
  AC_SUBST(CSHARPCFLAGS)
  AC_SUBST(CLI_PREFIX)
  
@@ -48,8 +53,8 @@
  fi
  
  
---- redland-bindings-1.0.5.1/csharp/Makefile.am.orig	2006-10-22 08:15:18.000000000 +0200
-+++ redland-bindings-1.0.5.1/csharp/Makefile.am	2007-02-03 18:35:53.273839492 +0100
+--- redland-bindings-1.0.5.1.orig/csharp/Makefile.am	2006-10-22 09:15:18.000000000 +0300
++++ redland-bindings-1.0.5.1/csharp/Makefile.am	2007-03-19 11:07:22.854944705 +0200
 @@ -93,7 +93,7 @@
  	rm -f build-csharp-stamp $(CSHARP_DLL)
  
@@ -59,31 +64,9 @@
  
  
  #MONO_GACUTIL=$(CLIRUN) $(CLI_PREFIX)/gacutil.exe
---- redland-bindings-1.0.5.1/csharp/Makefile.am~	2007-03-19 02:13:15.454450116 +0200
-+++ redland-bindings-1.0.5.1/csharp/Makefile.am	2007-03-19 10:35:39.492141129 +0200
 @@ -124,4 +124,4 @@
  	$(MONO_GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(DESTDIR)$(CLI_PREFIX)/lib -root $(DESTDIR)$(CLI_PREFIX)/lib
  
  install-pnet: Redland.dll
 -	$(PNET_GACUTIL) --install --default Redland.dll 1.0
 +	$(PNET_GACUTIL) -c $(DESTDIR)$(CLI_PREFIX)/lib --install --default Redland.dll 1.0
---- redland-bindings-1.0.5.1/configure.ac~	2007-03-19 10:52:59.385532770 +0200
-+++ redland-bindings-1.0.5.1/configure.ac	2007-03-19 10:54:43.227867125 +0200
-@@ -411,6 +411,7 @@
-       ;;
- 
-     no)
-+      break
-       ;;
-     *)
-       AC_MSG_ERROR(No such ECMA CLI implementation $name)
---- redland-bindings-1.0.5.1/configure.ac~	2007-03-19 11:04:52.311560145 +0200
-+++ redland-bindings-1.0.5.1/configure.ac	2007-03-19 11:04:54.311605111 +0200
-@@ -363,7 +363,6 @@
- 
- 
- 
--with_ecma_cli=
- dnl Pick an ECMA CLI implementation
- AC_ARG_WITH(ecma-cli, [  --with-ecma-cli=SYSTEM  Enable ECMA CLI interface - mono, dotgnu (default=no)], ecma_cli_name="$withval", ecma_cli_name="no")
- 
