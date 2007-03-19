@@ -6,7 +6,7 @@
 %bcond_without	ruby	# don't build Ruby bindings
 %bcond_without	tcl	# don't build (any) Tcl bindings
 %bcond_with	php4	# build PHP4 bindings (default PHP5)
-%bcond_without	tcl85	# use tcl8.4 instead of tcl8.5 dirs
+%bcond_with	tcl85	# use tcl8.5 instead of tcl8.4 dirs
 #
 %ifarch i386 alpha sparc sparcv9 sparc64
 %undefine	with_mono
