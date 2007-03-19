@@ -4,7 +4,7 @@
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
-%bcond_with	mono	# don't build mono bindings
+%bcond_with	mono	# build mono bindings
 %bcond_without	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
 %bcond_without	tcl	# don't build (any) Tcl bindings
