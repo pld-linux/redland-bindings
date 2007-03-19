@@ -1,12 +1,16 @@
+# TODO
+# - ilgac based install doesn't recognize version argument, so therefore mono binds are off:
+#   ilgac -c /tmp/B.9cbb8f/redland-bindings-1.0.5.1-root-builder/usr/lib --install --default Redland.dll 1.0
+#   1.0: No such file or directory
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
-%bcond_without	mono	# don't build mono bindings
+%bcond_with	mono	# build mono bindings
 %bcond_without	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
 %bcond_without	tcl	# don't build (any) Tcl bindings
 %bcond_with	php4	# build PHP4 bindings (default PHP5)
-%bcond_without	tcl85	# use tcl8.4 instead of tcl8.5 dirs
+%bcond_with	tcl85	# use tcl8.5 instead of tcl8.4 dirs
 #
 %ifarch i386 alpha sparc sparcv9 sparc64
 %undefine	with_mono
@@ -14,10 +18,10 @@
 %{?with_mono:%include	/usr/lib/rpm/macros.mono}
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
-Summary(pl.UTF-8):	WiÄ…zania szkieletu aplikacji Redland RDF
+Summary(pl):	Wi±zania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.5.1
-Release:	1
+Release:	4
 License:	LGPL v2.1+ or GPL v2+ or Apache v2
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
@@ -27,13 +31,13 @@ Patch1:		%{name}-csharp.patch
 URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.7
+%{?with_java:BuildRequires:	jdk}
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 1.0.5
 BuildRequires:	rpm-perlprov >= 4.1-13
-BuildRequires:	rpmbuild(macros) >= 1.322
-%{?with_java:BuildRequires:	jdk}
+BuildRequires:	rpmbuild(macros) >= 1.344
 %if %{with mono}
 BuildRequires:	mono-csharp
 BuildRequires:	rpmbuild(monoautodeps)
@@ -67,7 +71,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %else
 %define		tcldir	%{_libdir}/tcl8.4
 %endif
-%define		phpdir	%(php-config --extension-dir 2>/dev/null)
 
 %description
 Redland is a library that provides a high-level interface for the
@@ -79,103 +82,105 @@ Python, Ruby and Tcl. Several classes providing functionality such as
 for parsers, storage are built as modules that can be loaded at
 compile or run-time as required.
 
-%description -l pl.UTF-8
-Redland to biblioteka dostarczajÄ…ca wysokopoziomowy interfejs dla
-szkieletu opisu zasobÃ³w (RDF - Resource Description Framework),
-umoÅ¼liwiajÄ…ca na przetwarzanie grafÃ³w XML z RDF, przechowywanie,
+%description -l pl
+Redland to biblioteka dostarczaj±ca wysokopoziomowy interfejs dla
+szkieletu opisu zasobów (RDF - Resource Description Framework),
+umo¿liwiaj±ca na przetwarzanie grafów XML z RDF, przechowywanie,
 odpytywanie i obrabianie ich. Redland implementuje wszystkie idee RDF
-we wÅ‚asnych klasach poprzez API oparte na obiektach, majÄ…cych
-odzwierciedlenie w API dla poszczegÃ³lnych jÄ™zykÃ³w - aktualnie C#, Java
-Perl, PHP, Python, Ruby i Tcl. Kilka klas dostarczajÄ…cych
-funkcjonalnoÅ›Ä‡ dla parserÃ³w i przechowywania danych jest budowana jako
-moduÅ‚y, ktÃ³re mogÄ… byÄ‡ wczytywane w czasie kompilacji lub dziaÅ‚ania
+we w³asnych klasach poprzez API oparte na obiektach, maj±cych
+odzwierciedlenie w API dla poszczególnych jêzyków - aktualnie C#, Java
+Perl, PHP, Python, Ruby i Tcl. Kilka klas dostarczaj±cych
+funkcjonalno¶æ dla parserów i przechowywania danych jest budowana jako
+modu³y, które mog± byæ wczytywane w czasie kompilacji lub dzia³ania
 programu w razie potrzeby.
 
 %package -n dotnet-redland
 Summary:	Mono C# bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs Mono C# do biblioteki Redland RDF
+Summary(pl):	Interfejs Mono C# do biblioteki Redland RDF
 Group:		Libraries
 
 %description -n dotnet-redland
 Mono C# bindings for Redland RDF library.
 
-%description -n dotnet-redland -l pl.UTF-8
+%description -n dotnet-redland -l pl
 Interfejs Mono C# do biblioteki Redland RDF.
 
 %package -n java-redland
 Summary:	Java bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs Javy do biblioteki Redland RDF
+Summary(pl):	Interfejs Javy do biblioteki Redland RDF
 Group:		Libraries
 Requires:	jre
 
 %description -n java-redland
 Java bindings for Redland RDF library.
 
-%description -n java-redland -l pl.UTF-8
+%description -n java-redland -l pl
 Interfejs Javy do biblioteki Redland RDF.
 
 %package -n perl-RDF-Redland
 Summary:	Perl bindings for Redland RDF library
-Summary(pl.UTF-8):	Perlowy interfejs do biblioteki Redland RDF
+Summary(pl):	Perlowy interfejs do biblioteki Redland RDF
 Group:		Development/Languages/Perl
 
 %description -n perl-RDF-Redland
 Perl bindings for Redland RDF library.
 
-%description -n perl-RDF-Redland -l pl.UTF-8
+%description -n perl-RDF-Redland -l pl
 Perlowy interfejs do biblioteki Redland RDF.
 
 %package -n php4-redland
-Summary:	PHP bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs PHP do biblioteki Redland RDF
+Summary:	PHP 4.x bindings for Redland RDF library
+Summary(pl):	Interfejs PHP 4.x do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
+Requires:	php4-common >= 3:4.4.0-3
 
 %description -n php4-redland
-PHP bindings for Redland RDF library.
+PHP 4.x bindings for Redland RDF library.
 
-%description -n php4-redland -l pl.UTF-8
-Interfejs PHP do biblioteki Redland RDF.
+%description -n php4-redland -l pl
+Interfejs PHP 4.x do biblioteki Redland RDF.
 
 %package -n php-redland
-Summary:	PHP bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs PHP do biblioteki Redland RDF
+Summary:	PHP 5.x bindings for Redland RDF library
+Summary(pl):	Interfejs PHP 5.x do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
+Requires:	php-common >= 4:5.0.4
 
 %description -n php-redland
-PHP bindings for Redland RDF library.
+PHP 5.x bindings for Redland RDF library.
 
-%description -n php-redland -l pl.UTF-8
-Interfejs PHP do biblioteki Redland RDF.
+%description -n php-redland -l pl
+Interfejs PHP 5.x do biblioteki Redland RDF.
 
 %package -n python-redland
 Summary:	Python bindings for Redland RDF library
-Summary(pl.UTF-8):	Pythonowy interfejs do biblioteki Redland RDF
+Summary(pl):	Pythonowy interfejs do biblioteki Redland RDF
 Group:		Libraries/Python
 %pyrequires_eq	python
 
 %description -n python-redland
 Python bindings for Redland RDF library.
 
-%description -n python-redland -l pl.UTF-8
+%description -n python-redland -l pl
 Pythonowy interfejs do biblioteki Redland RDF.
 
 %package -n ruby-redland
 Summary:	Ruby bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs jÄ™zyka Ruby do biblioteki Redland RDF
+Summary(pl):	Interfejs jêzyka Ruby do biblioteki Redland RDF
 Group:		Libraries
 %{?ruby_mod_ver_requires_eq}
 
 %description -n ruby-redland
 Ruby bindings for Redland RDF library.
 
-%description -n ruby-redland -l pl.UTF-8
-Interfejs jÄ™zyka Ruby do biblioteki Redland RDF.
+%description -n ruby-redland -l pl
+Interfejs jêzyka Ruby do biblioteki Redland RDF.
 
 %package -n tcl-redland
 Summary:	Tcl bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs Tcl do biblioteki Redland RDF
+Summary(pl):	Interfejs Tcl do biblioteki Redland RDF
 Group:		Libraries
 %if %{with tcl85}
 Requires:	tcl < 8.6
@@ -188,7 +193,7 @@ Requires:	tcl >= 8.4
 %description -n tcl-redland
 Tcl bindings for Redland RDF library.
 
-%description -n tcl-redland -l pl.UTF-8
+%description -n tcl-redland -l pl
 Interfejs Tcl do biblioteki Redland RDF.
 
 %prep
@@ -206,7 +211,7 @@ rm -f php/{php_redland.h,redland_wrap.c}
 %{__automake}
 %configure \
 	--disable-static \
-	%{?with_mono:--with-ecma-cli=mono} \
+	--with-ecma-cli=%{?with_mono:mono}%{!?with_mono:no} \
 	%{?with_java:--with-java --with-jdk=%{_libdir}/java jdkdir=%{_libdir}/java} \
 	--with-perl \
 %if %{with php}
@@ -244,26 +249,35 @@ rm $RPM_BUILD_ROOT%{py_sitescriptdir}/*.py
 %{?with_java:rm -f $RPM_BUILD_ROOT%{_libdir}/java/librdf-java.la}
 
 %if %{with php}
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/php%{?with_php4:4}/conf.d,%{phpdir}}
-cat <<'EOF' > $RPM_BUILD_ROOT%{_sysconfdir}/php%{?with_php4:4}/conf.d/redland.ini
+install -d $RPM_BUILD_ROOT{%{php_sysconfdir}/conf.d,%{php_extensiondir}}
+cat <<'EOF' > $RPM_BUILD_ROOT%{php_sysconfdir}/conf.d/redland.ini
 ; Enable redland bindings module
 extension=redland.so
 EOF
 # make .so executable so that rpm would add autodeps on .so files
-chmod +x $RPM_BUILD_ROOT%{phpdir}/*.so
+chmod +x $RPM_BUILD_ROOT%{php_extensiondir}/*.so
 %endif
+
+rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
+rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/RDF/Redland/CORE/.packlist
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n php%{?with_php4:4}-redland
-[ ! -f /etc/apache/conf.d/??_mod_php.%{?with_php4:4}conf ] || %service -q apache restart
-[ ! -f /etc/httpd/httpd.conf/??_mod_php%{?with_php4:4}.conf ] || %service -q httpd restart
+%post -n php-redland
+%php_webserver_restart
 
-%postun -n php%{?with_php4:4}-redland
+%postun -n php-redland
 if [ "$1" = 0 ]; then
-	[ ! -f /etc/apache/conf.d/??_mod_php%{?with_php4:4}.conf ] || %service -q apache restart
-	[ ! -f /etc/httpd/httpd.conf/??_mod_php%{?with_php4:4}.conf ] || %service -q httpd restart
+	%php_webserver_restart
+fi
+
+%post -n php4-redland
+%php4_webserver_restart
+
+%postun -n php4-redland
+if [ "$1" = 0 ]; then
+	%php4_webserver_restart
 fi
 
 %files
@@ -280,7 +294,7 @@ fi
 %files -n java-redland
 %defattr(644,root,root,755)
 %doc docs/java.html
-%{_libdir}/java/librdf-java.so*
+%attr(755,root,root) %{_libdir}/java/librdf-java.so*
 %{_javadir}/librdf-java.jar
 %endif
 
@@ -301,8 +315,8 @@ fi
 %files -n php%{?with_php4:4}-redland
 %defattr(644,root,root,755)
 %doc docs/php.html
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/php%{?with_php4:4}/conf.d/redland.ini
-%attr(755,root,root) %{phpdir}/redland.so
+%config(noreplace) %verify(not md5 mtime size) %{php_sysconfdir}/conf.d/redland.ini
+%attr(755,root,root) %{php_extensiondir}/redland.so
 %endif
 
 %files -n python-redland
