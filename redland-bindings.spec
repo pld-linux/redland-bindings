@@ -1,6 +1,7 @@
 # TODO
-# - mono installs without buildroot (fail: ac-amd64 ac-ppc ac-athlon ac-i386 ac-i686) (ok: ac-i586):
-#   ilgac --install --default Redland.dll 1.0 /usr/lib/cscc/lib/1.0.2.1: Permission denied
+# - ilgac based install doesn't recognize version argument, so therefore mono binds are off:
+#   ilgac -c /tmp/B.9cbb8f/redland-bindings-1.0.5.1-root-builder/usr/lib --install --default Redland.dll 1.0
+#   1.0: No such file or directory
 #
 # Conditional build:
 %bcond_with	java	# build Java bindings
