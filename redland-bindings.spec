@@ -1,43 +1,30 @@
 #
 # Conditional build:
-%bcond_with	java	# build Java bindings
-%bcond_without	mono	# don't build mono bindings
 %bcond_without	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
-%bcond_without	tcl	# don't build (any) Tcl bindings
 %bcond_with	php4	# build PHP4 bindings (default PHP5)
-%bcond_without	tcl85	# use tcl8.4 instead of tcl8.5 dirs
 #
-%ifarch i386 alpha sparc sparcv9 sparc64
-%undefine	with_mono
-%endif
-%{?with_mono:%include	/usr/lib/rpm/macros.mono}
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.6.1
+Version:	1.0.7.1
 Release:	1
-License:	LGPL v2.1+ or GPL v2+ or Apache v2
+License:	LGPL v2.1+ or GPL v2+ or Apache 2.0
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
-# Source0-md5:	eb527252d46d5e2d16d4f4d2abf6980d
+# Source0-md5:	ad38f4b5d4f55a87359ebff047a00184
 Patch0:		%{name}-py_sitescriptdir.patch
-Patch1:		%{name}-csharp.patch
+Patch1:		%{name}-php.patch
 URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.7
-%{?with_java:BuildRequires:	jdk}
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	python-devel
-BuildRequires:	redland-devel >= 1.0.6
+BuildRequires:	redland-devel >= 1.0.7
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.344
-%if %{with mono}
-BuildRequires:	mono-csharp
-BuildRequires:	rpmbuild(monoautodeps)
-%endif
 %if %{with php}
 %if %{with php4}
 BuildRequires:	php4-cli
@@ -51,22 +38,10 @@ BuildRequires:	swig-php >= 1.3.29
 %if %{with ruby}
 BuildRequires:	ruby-devel
 %endif
-%if %{with tcl}
-%if %{with tcl85}
-BuildRequires:	tcl-devel < 8.6
-BuildRequires:	tcl-devel >= 8.5
-%else
-BuildRequires:	tcl-devel < 8.5
-BuildRequires:	tcl-devel >= 8.4
-%endif
-%endif
+Obsoletes:	dotnet-redland
+Obsoletes:	java-redland
+Obsoletes:	tcl-redland
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%if %{with tcl85}
-%define		tcldir	%{_libdir}/tcl8.5
-%else
-%define		tcldir	%{_libdir}/tcl8.4
-%endif
 
 %description
 Redland is a library that provides a high-level interface for the
@@ -89,29 +64,6 @@ Perl, PHP, Python, Ruby i Tcl. Kilka klas dostarczających
 funkcjonalność dla parserów i przechowywania danych jest budowana jako
 moduły, które mogą być wczytywane w czasie kompilacji lub działania
 programu w razie potrzeby.
-
-%package -n dotnet-redland
-Summary:	Mono C# bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs Mono C# do biblioteki Redland RDF
-Group:		Libraries
-
-%description -n dotnet-redland
-Mono C# bindings for Redland RDF library.
-
-%description -n dotnet-redland -l pl.UTF-8
-Interfejs Mono C# do biblioteki Redland RDF.
-
-%package -n java-redland
-Summary:	Java bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs Javy do biblioteki Redland RDF
-Group:		Libraries
-Requires:	jre
-
-%description -n java-redland
-Java bindings for Redland RDF library.
-
-%description -n java-redland -l pl.UTF-8
-Interfejs Javy do biblioteki Redland RDF.
 
 %package -n perl-RDF-Redland
 Summary:	Perl bindings for Redland RDF library
@@ -174,30 +126,12 @@ Ruby bindings for Redland RDF library.
 %description -n ruby-redland -l pl.UTF-8
 Interfejs języka Ruby do biblioteki Redland RDF.
 
-%package -n tcl-redland
-Summary:	Tcl bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs Tcl do biblioteki Redland RDF
-Group:		Libraries
-%if %{with tcl85}
-Requires:	tcl < 8.6
-Requires:	tcl >= 8.5
-%else
-Requires:	tcl < 8.5
-Requires:	tcl >= 8.4
-%endif
-
-%description -n tcl-redland
-Tcl bindings for Redland RDF library.
-
-%description -n tcl-redland -l pl.UTF-8
-Interfejs Tcl do biblioteki Redland RDF.
-
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 
-# generated using broken swig
+# force regeneration
 rm -f php/{php_redland.h,redland_wrap.c}
 
 %build
@@ -207,21 +141,16 @@ rm -f php/{php_redland.h,redland_wrap.c}
 %{__automake}
 %configure \
 	--disable-static \
-	--with-ecma-cli=%{?with_mono:mono}%{!?with_mono:no} \
-	%{?with_java:--with-java --with-jdk=%{_libdir}/java jdkdir=%{_libdir}/java} \
 	--with-perl \
 %if %{with php}
 	--with-php=%{_bindir}/php%{?with_php4:4}.cli \
 %endif
 	--with-python \
-	%{?with_ruby:--with-ruby} \
-	%{?with_tcl:--with-tcl}
+	%{?with_ruby:--with-ruby}
 
 %{__make} \
 	MAKE_PL_OPTS='INSTALLDIRS=vendor OPTIMIZE="%{rpmcflags}"' \
-	javalibdir=%{_libdir}/java \
-	pythondir=%{py_sitedir} \
-	tcldir=%{tcldir}
+	pythondir=%{py_sitedir}
 
 %if %{with ruby}
 cd ruby
@@ -234,15 +163,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	javalibdir=%{_libdir}/java \
-	pythondir=%{py_sitedir} \
-	tcldir=%{tcldir}
+	pythondir=%{py_sitedir}
 
 %py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
 rm $RPM_BUILD_ROOT%{py_sitescriptdir}/*.py
-
-%{?with_java:rm -f $RPM_BUILD_ROOT%{_libdir}/java/librdf-java.la}
 
 %if %{with php}
 install -d $RPM_BUILD_ROOT{%{php_sysconfdir}/conf.d,%{php_extensiondir}}
@@ -278,21 +203,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog LICENSE.html NEWS.html README.html RELEASE.html TODO.html
-
-%if %{with mono}
-%files -n dotnet-redland
-%defattr(644,root,root,755)
-%{_prefix}/lib/mono/gac/Redland
-%endif
-
-%if %{with java}
-%files -n java-redland
-%defattr(644,root,root,755)
-%doc docs/java.html
-%attr(755,root,root) %{_libdir}/java/librdf-java.so*
-%{_javadir}/librdf-java.jar
-%endif
+%doc AUTHORS ChangeLog* LICENSE.html NEWS.html README.html RELEASE.html TODO.html
 
 %files -n perl-RDF-Redland
 %defattr(644,root,root,755)
@@ -329,11 +240,4 @@ fi
 %dir %{ruby_rubylibdir}/rdf
 %{ruby_rubylibdir}/rdf/redland.rb
 %{ruby_rubylibdir}/rdf/redland
-%endif
-
-%if %{with tcl}
-%files -n tcl-redland
-%defattr(644,root,root,755)
-%doc docs/tcl.html
-%attr(755,root,root) %{_libdir}/tcl*/Redland.so
 %endif
