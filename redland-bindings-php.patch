@@ -1,0 +1,24 @@
+--- redland-bindings-1.0.7.1/php/redland-post.i.orig	2007-12-28 22:44:41.000000000 +0100
++++ redland-bindings-1.0.7.1/php/redland-post.i	2008-01-06 23:14:49.302665147 +0100
+@@ -81,9 +81,10 @@
+     return;
+   
+ #if PHP_MAJOR_VERSION >= 5
++  TSRMLS_FETCH();
+   zend_throw_exception(redland_exception_ptr,
+                        librdf_php_log_message, 
+-                       librdf_php_log_code TSRMLS_DC);
++                       librdf_php_log_code TSRMLS_CC);
+ #endif
+   
+   librdf_php_log_code=0;
+@@ -102,7 +103,8 @@
+     librdf_world_open(librdf_php_world);
+ 
+ #if PHP_MAJOR_VERSION >= 5
+-    exception_ce = zend_exception_get_default();
++    TSRMLS_FETCH();
++    exception_ce = zend_exception_get_default(TSRMLS_C);
+     INIT_CLASS_ENTRY(ee_ce, "RedlandException", NULL);
+     redland_exception_ptr = zend_register_internal_class_ex(&ee_ce, 
+                                                             exception_ce, 
