@@ -10,7 +10,7 @@ Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.7.1
 Release:	1
-License:	LGPL v2.1+ or GPL v2+ or Apache 2.0
+License:	LGPL v2.1+ or GPL v2+ or Apache v2.0
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
 # Source0-md5:	ad38f4b5d4f55a87359ebff047a00184
