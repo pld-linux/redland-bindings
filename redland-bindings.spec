@@ -8,12 +8,12 @@
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.7.1
+Version:	1.0.8.1
 Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2.0
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
-# Source0-md5:	ad38f4b5d4f55a87359ebff047a00184
+# Source0-md5:	52ff9e9f7fb38e3514862d6077e59332
 Patch0:		%{name}-py_sitescriptdir.patch
 Patch1:		%{name}-php.patch
 URL:		http://librdf.org/bindings/
@@ -21,8 +21,9 @@ BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.7
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
+BuildRequires:	pkgconfig
 BuildRequires:	python-devel
-BuildRequires:	redland-devel >= 1.0.7
+BuildRequires:	redland-devel >= 1.0.8
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.344
 %if %{with php}
