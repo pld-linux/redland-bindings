@@ -24,6 +24,7 @@ BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	pkgconfig
 BuildRequires:	python-devel
 BuildRequires:	redland-devel >= 1.0.8
+BuildRequires:	redland-devel < 1.0.9
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.344
 %if %{with php}
