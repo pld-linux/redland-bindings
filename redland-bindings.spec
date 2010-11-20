@@ -18,7 +18,7 @@ Patch0:		%{name}-py_sitescriptdir.patch
 Patch1:		%{name}-php.patch
 URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.53
-BuildRequires:	automake >= 1:1.7
+BuildRequires:	automake >= 1:1.11
 BuildRequires:	libtool
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	pkgconfig
