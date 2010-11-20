@@ -50,10 +50,10 @@ Redland is a library that provides a high-level interface for the
 Resource Description Framework (RDF) allowing the RDF graph to be
 parsed from XML, stored, queried and manipulated. Redland implements
 each of the RDF concepts in its own class via an object based API,
-reflected into the language APIs, currently C#, Java, Perl, PHP,
-Python, Ruby and Tcl. Several classes providing functionality such as
-for parsers, storage are built as modules that can be loaded at
-compile or run-time as required.
+reflected into the language APIs, currently Lua, Perl, PHP, Python and
+Ruby. Several classes providing functionality such as for parsers,
+storage are built as modules that can be loaded at compile or run-time
+as required.
 
 %description -l pl.UTF-8
 Redland to biblioteka dostarczająca wysokopoziomowy interfejs dla
@@ -61,11 +61,11 @@ szkieletu opisu zasobów (RDF - Resource Description Framework),
 umożliwiająca na przetwarzanie grafów XML z RDF, przechowywanie,
 odpytywanie i obrabianie ich. Redland implementuje wszystkie idee RDF
 we własnych klasach poprzez API oparte na obiektach, mających
-odzwierciedlenie w API dla poszczególnych języków - aktualnie C#, Java
-Perl, PHP, Python, Ruby i Tcl. Kilka klas dostarczających
-funkcjonalność dla parserów i przechowywania danych jest budowana jako
-moduły, które mogą być wczytywane w czasie kompilacji lub działania
-programu w razie potrzeby.
+odzwierciedlenie w API dla poszczególnych języków - aktualnie Lua,
+Perla, PHP, Pythona i Ruby'ego. Kilka klas dostarczających
+funkcjonalność dla analizatorów i przechowywania danych jest budowana
+jako moduły, które mogą być wczytywane w czasie kompilacji lub
+działania programu w razie potrzeby.
 
 %package -n perl-RDF-Redland
 Summary:	Perl bindings for Redland RDF library
