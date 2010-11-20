@@ -1,14 +1,28 @@
---- redland-bindings-0.9.19.1/configure.ac.orig	2004-11-02 21:04:22.000000000 +0100
-+++ redland-bindings-0.9.19.1/configure.ac	2005-01-09 00:14:21.283977360 +0100
-@@ -190,6 +190,8 @@
-   PYTHON_LIB="${python_prefix}/lib/python${PYTHON_VERSION}/site-packages"
-   AC_SUBST(PYTHON_LIB)
-   AC_MSG_RESULT($PYTHON_LIB)
-+  PYTHON_SCRIPT="${python_prefix}/share/python${PYTHON_VERSION}/site-packages"
-+  AC_SUBST(PYTHON_SCRIPT)
+--- redland-bindings-1.0.11.1/configure.ac.orig	2010-09-27 03:57:15.000000000 +0200
++++ redland-bindings-1.0.11.1/configure.ac	2010-11-20 11:34:40.759094909 +0100
+@@ -237,6 +237,7 @@
+ AC_ARG_VAR(PYTHON_LIBEXT, [Python shared library file extension])
+ AC_ARG_VAR(PYTHON_INCLUDES, [Install location of python includes])
+ AC_ARG_VAR(PYTHON_LIB, [Install location of python libraries])
++AC_ARG_VAR(PYTHON_SCRIPT, [Install location of python scripts])
  
-   if test `uname` = Darwin; then
-     PYTHON_LDFLAGS="-Wl,-F. -Wl,-F. -bundle"
+ AC_MSG_CHECKING(Enable Python API)
+ if test "X$with_python" != Xno; then
+@@ -297,6 +298,14 @@
+     AC_MSG_RESULT($PYTHON_LIB)
+   fi
+ 
++  AC_MSG_CHECKING(Python scripts)
++  if test "X$PYTHON_SCRIPT" != X; then
++    AC_MSG_RESULT(using user lib: $PYTHON_SCRIPT)
++  else
++    PYTHON_SCRIPT="${python_prefix}/share/python${PYTHON_VERSION}/site-packages"
++    AC_MSG_RESULT($PYTHON_SCRIPT)
++  fi
++
+   AC_MSG_CHECKING(Python LDFLAGS)
+   if test "X$PYTHON_LDFLAGS" != X; then
+     AC_MSG_RESULT(using user ldflags: $PYTHON_LDFLAGS)
 --- redland-bindings-1.0.8.1/python/Makefile.am.orig	2008-07-04 10:36:16.000000000 +0200
 +++ redland-bindings-1.0.8.1/python/Makefile.am	2008-08-25 20:50:20.566120063 +0200
 @@ -37,6 +37,7 @@

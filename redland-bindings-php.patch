@@ -1,17 +1,13 @@
---- redland-bindings-1.0.7.1/php/redland-post.i.orig	2007-12-28 22:44:41.000000000 +0100
-+++ redland-bindings-1.0.7.1/php/redland-post.i	2008-01-06 23:14:49.302665147 +0100
-@@ -81,9 +81,10 @@
+--- redland-bindings-1.0.11.1/php/redland-post.i.orig	2009-12-16 17:58:00.000000000 +0100
++++ redland-bindings-1.0.11.1/php/redland-post.i	2010-11-20 11:37:48.903102452 +0100
+@@ -81,6 +81,7 @@
      return;
    
  #if PHP_MAJOR_VERSION >= 5
 +  TSRMLS_FETCH();
    zend_throw_exception(redland_exception_ptr,
                         librdf_php_log_message, 
--                       librdf_php_log_code TSRMLS_DC);
-+                       librdf_php_log_code TSRMLS_CC);
- #endif
-   
-   librdf_php_log_code=0;
+                        librdf_php_log_code TSRMLS_CC);
 @@ -102,7 +103,8 @@
      librdf_world_open(librdf_php_world);
  
