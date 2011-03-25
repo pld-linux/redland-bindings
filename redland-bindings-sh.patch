@@ -1,0 +1,11 @@
+--- redland-bindings-1.0.13.1/configure.ac.orig	2011-03-25 16:55:46.356909615 +0100
++++ redland-bindings-1.0.13.1/configure.ac	2011-03-25 17:04:20.984909615 +0100
+@@ -153,7 +153,7 @@
+   PHP_INCLUDES=`$PHP_CONFIG --includes`
+   PHP_EXTENSION_DIR=`$PHP_CONFIG --extension-dir`
+ 
+-  if test $PHP_VERSION '>' 5.0.0; then
++  if echo $PHP_VERSION | grep -q '^[[5-9]]\.'; then
+     PHP_SWIG="-php5"
+   else
+     PHP_SWIG="-php4"

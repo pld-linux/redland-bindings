@@ -1,0 +1,20 @@
+--- redland-bindings-1.0.13.1/configure.ac.orig	2011-03-25 17:37:15.160909615 +0100
++++ redland-bindings-1.0.13.1/configure.ac	2011-03-25 17:52:13.604912129 +0100
+@@ -354,6 +354,8 @@
+   ruby_install_dir_config=`$RUBY -rrbconfig -e "puts Config::CONFIG['$ruby_install_dir_variable']"`
+   ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts Config::CONFIG['$ruby_arch_install_dir_variable']"`
+   LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`
++  RUBY_HDRDIR=`$RUBY -rrbconfig -e "print Config::CONFIG['rubyhdrdir']"`
++  RUBY_ARCH=`$RUBY -rrbconfig -e "print Config::CONFIG['arch']"`
+   changequote([, ])dnl
+ 
+   AC_MSG_CHECKING(Ruby installation dir)
+@@ -374,7 +376,7 @@
+     AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from Config::CONFIG $ruby_arch_install_dir_variable)
+   fi
+ 
+-  RUBY_INCLUDES="-I$RUBY_ARCHDIR"
++  RUBY_INCLUDES="-I$RUBY_HDRDIR -I$RUBY_HDRDIR/$RUBY_ARCH"
+ else
+   # This allows 'make clean' in the ruby directory to work when
+   # ruby isn't available
