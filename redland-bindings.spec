@@ -1,5 +1,6 @@
 #
 # Conditional build:
+%bcond_without	lua	# don't build Lua bindings
 %bcond_without	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
 %bcond_with	php4	# build PHP4 bindings (default PHP5)
@@ -8,12 +9,12 @@
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.13.1
+Version:	1.0.14.1
 Release:	1
-License:	LGPL v2.1+ or GPL v2+ or Apache v2.0
+License:	LGPL v2.1+ or GPL v2+ or Apache v2.0+
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
-# Source0-md5:	f65796cdcd75c27a8b9e9c0c797ffb50
+# Source0-md5:	293241365303153d7d0635a76e2dd8d3
 Patch0:		%{name}-py_sitescriptdir.patch
 Patch1:		%{name}-php.patch
 Patch2:		%{name}-sh.patch
@@ -22,11 +23,11 @@ URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	libtool
+%{?with_lua:BuildRequires:	lua51-devel >= 5.1}
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	pkgconfig
 BuildRequires:	python-devel
-BuildRequires:	redland-devel >= 1.0.13
-BuildRequires:	redland-devel < 1.0.14
+BuildRequires:	redland-devel >= 1.0.14
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.344
 %if %{with php}
@@ -37,7 +38,7 @@ BuildRequires:	php4-devel
 BuildRequires:	php-cli >= 3:5.0.0
 BuildRequires:	php-devel >= 3:5.0.0
 %endif
-BuildRequires:	swig-php >= 1.3.29
+BuildRequires:	swig-php >= 2.0
 %endif
 %if %{with ruby}
 BuildRequires:	ruby-devel
@@ -69,10 +70,23 @@ funkcjonalność dla analizatorów i przechowywania danych jest budowana
 jako moduły, które mogą być wczytywane w czasie kompilacji lub
 działania programu w razie potrzeby.
 
+%package -n lua-redland
+Summary:	Lua bindings for Redland RDF library
+Summary(pl.UTF-8):	Interfejs języka Lua do biblioteki Redland RDF
+Group:		Development/Languages/Perl
+Requires:	redland >= 1.0.14
+
+%description -n lua-redland
+Lua bindings for Redland RDF library.
+
+%description -n lua-redland -l pl.UTF-8
+Interfejs języka Lua do biblioteki Redland RDF.
+
 %package -n perl-RDF-Redland
 Summary:	Perl bindings for Redland RDF library
 Summary(pl.UTF-8):	Perlowy interfejs do biblioteki Redland RDF
 Group:		Development/Languages/Perl
+Requires:	redland >= 1.0.14
 
 %description -n perl-RDF-Redland
 Perl bindings for Redland RDF library.
@@ -86,6 +100,7 @@ Summary(pl.UTF-8):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
 Requires:	php4-common >= 3:4.4.0-3
+Requires:	redland >= 1.0.14
 
 %description -n php4-redland
 PHP 4.x bindings for Redland RDF library.
@@ -99,6 +114,7 @@ Summary(pl.UTF-8):	Interfejs PHP 5.x do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
 Requires:	php-common >= 4:5.0.4
+Requires:	redland >= 1.0.14
 
 %description -n php-redland
 PHP 5.x bindings for Redland RDF library.
@@ -110,6 +126,7 @@ Interfejs PHP 5.x do biblioteki Redland RDF.
 Summary:	Python bindings for Redland RDF library
 Summary(pl.UTF-8):	Pythonowy interfejs do biblioteki Redland RDF
 Group:		Libraries/Python
+Requires:	redland >= 1.0.14
 %pyrequires_eq	python
 
 %description -n python-redland
@@ -122,6 +139,7 @@ Pythonowy interfejs do biblioteki Redland RDF.
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl.UTF-8):	Interfejs języka Ruby do biblioteki Redland RDF
 Group:		Libraries
+Requires:	redland >= 1.0.14
 %{?ruby_mod_ver_requires_eq}
 
 %description -n ruby-redland
@@ -147,6 +165,7 @@ Interfejs języka Ruby do biblioteki Redland RDF.
 %{__automake}
 %configure \
 	--disable-static \
+	%{?with_lua:--with-lua=lua51} \
 	--with-perl \
 	--with-perl-makemaker-args='INSTALLDIRS=vendor OPTIMIZE="%{rpmcflags}"' \
 %if %{with php}
@@ -170,12 +189,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	pythondir=%{py_sitedir}
+	pythondir=%{py_sitedir} \
+	luadir=%{_libdir}/lua/5.1
 
 %py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %{__rm} $RPM_BUILD_ROOT%{py_sitescriptdir}/*.py
 
+%if %{with lua}
+chmod +x $RPM_BUILD_ROOT%{_libdir}/lua/5.1/*.so
+%endif
 %if %{with php}
 install -d $RPM_BUILD_ROOT{%{php_sysconfdir}/conf.d,%{php_extensiondir}}
 cat <<'EOF' > $RPM_BUILD_ROOT%{php_sysconfdir}/conf.d/redland.ini
@@ -211,6 +234,12 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog* LICENSE.html NEWS.html README.html RELEASE.html TODO.html
+
+%if %{with lua}
+%files -n lua-redland
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/lua/5.1/redland.so
+%endif
 
 %files -n perl-RDF-Redland
 %defattr(644,root,root,755)
