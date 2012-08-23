@@ -10,7 +10,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.14.1
-Release:	2
+Release:	3
 License:	LGPL v2.1+ or GPL v2+ or Apache v2.0+
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
@@ -113,7 +113,7 @@ Summary:	PHP 5.x bindings for Redland RDF library
 Summary(pl.UTF-8):	Interfejs PHP 5.x do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
-Requires:	php-common >= 4:5.0.4
+Requires:	php(core) >= 5.0.4
 Requires:	redland >= 1.0.14
 
 %description -n php-redland
