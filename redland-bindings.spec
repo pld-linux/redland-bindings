@@ -9,25 +9,24 @@
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.14.1
-Release:	3
+Version:	1.0.16.1
+Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2.0+
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
-# Source0-md5:	293241365303153d7d0635a76e2dd8d3
+# Source0-md5:	62fc463076cb6fef4e922bdb5f2979b9
 Patch0:		%{name}-py_sitescriptdir.patch
 Patch1:		%{name}-php.patch
 Patch2:		%{name}-sh.patch
-Patch3:		%{name}-ruby.patch
 URL:		http://librdf.org/bindings/
-BuildRequires:	autoconf >= 2.53
+BuildRequires:	autoconf >= 2.62
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	libtool
 %{?with_lua:BuildRequires:	lua51-devel >= 5.1}
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	pkgconfig
 BuildRequires:	python-devel
-BuildRequires:	redland-devel >= 1.0.14
+BuildRequires:	redland-devel >= 1.0.15
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.344
 %if %{with php}
@@ -38,7 +37,7 @@ BuildRequires:	php4-devel
 BuildRequires:	php-cli >= 3:5.0.0
 BuildRequires:	php-devel >= 3:5.0.0
 %endif
-BuildRequires:	swig-php >= 2.0
+BuildRequires:	swig-php >= 2.0.0
 %endif
 %if %{with ruby}
 BuildRequires:	ruby-devel
@@ -74,7 +73,7 @@ działania programu w razie potrzeby.
 Summary:	Lua bindings for Redland RDF library
 Summary(pl.UTF-8):	Interfejs języka Lua do biblioteki Redland RDF
 Group:		Development/Languages/Perl
-Requires:	redland >= 1.0.14
+Requires:	redland >= 1.0.15
 
 %description -n lua-redland
 Lua bindings for Redland RDF library.
@@ -86,7 +85,7 @@ Interfejs języka Lua do biblioteki Redland RDF.
 Summary:	Perl bindings for Redland RDF library
 Summary(pl.UTF-8):	Perlowy interfejs do biblioteki Redland RDF
 Group:		Development/Languages/Perl
-Requires:	redland >= 1.0.14
+Requires:	redland >= 1.0.15
 
 %description -n perl-RDF-Redland
 Perl bindings for Redland RDF library.
@@ -100,7 +99,7 @@ Summary(pl.UTF-8):	Interfejs PHP do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
 Requires:	php4-common >= 3:4.4.0-3
-Requires:	redland >= 1.0.14
+Requires:	redland >= 1.0.15
 
 %description -n php4-redland
 PHP 4.x bindings for Redland RDF library.
@@ -114,7 +113,7 @@ Summary(pl.UTF-8):	Interfejs PHP 5.x do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
 Requires:	php(core) >= 5.0.4
-Requires:	redland >= 1.0.14
+Requires:	redland >= 1.0.15
 
 %description -n php-redland
 PHP 5.x bindings for Redland RDF library.
@@ -126,7 +125,7 @@ Interfejs PHP 5.x do biblioteki Redland RDF.
 Summary:	Python bindings for Redland RDF library
 Summary(pl.UTF-8):	Pythonowy interfejs do biblioteki Redland RDF
 Group:		Libraries/Python
-Requires:	redland >= 1.0.14
+Requires:	redland >= 1.0.15
 %pyrequires_eq	python
 
 %description -n python-redland
@@ -139,7 +138,7 @@ Pythonowy interfejs do biblioteki Redland RDF.
 Summary:	Ruby bindings for Redland RDF library
 Summary(pl.UTF-8):	Interfejs języka Ruby do biblioteki Redland RDF
 Group:		Libraries
-Requires:	redland >= 1.0.14
+Requires:	redland >= 1.0.15
 %{?ruby_mod_ver_requires_eq}
 
 %description -n ruby-redland
@@ -153,7 +152,6 @@ Interfejs języka Ruby do biblioteki Redland RDF.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 # force regeneration
 %{__rm} php/{php_redland.h,redland_wrap.c}
