@@ -3,14 +3,14 @@
 %bcond_without	lua	# don't build Lua bindings
 %bcond_without	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
-%bcond_with	php4	# build PHP4 bindings (default PHP5)
-#
+
+%define		php_name	php55
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.16.1
-Release:	4
+Release:	5
 License:	LGPL v2.1+ or GPL v2+ or Apache v2.0+
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
@@ -30,13 +30,8 @@ BuildRequires:	redland-devel >= 1.0.15
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.344
 %if %{with php}
-%if %{with php4}
-BuildRequires:	php4-cli
-BuildRequires:	php4-devel
-%else
-BuildRequires:	php-cli >= 3:5.0.0
-BuildRequires:	php-devel >= 3:5.0.0
-%endif
+BuildRequires:	%{php_name}-devel
+BuildRequires:	%{php_name}-program
 BuildRequires:	swig-php >= 2.0.0
 %endif
 %if %{with ruby}
@@ -93,40 +88,25 @@ Perl bindings for Redland RDF library.
 %description -n perl-RDF-Redland -l pl.UTF-8
 Perlowy interfejs do biblioteki Redland RDF.
 
-%package -n php4-redland
-Summary:	PHP bindings for Redland RDF library
-Summary(pl.UTF-8):	Interfejs PHP do biblioteki Redland RDF
-Group:		Libraries
-%{?requires_php_extension}
-Requires:	php4-common >= 3:4.4.0-3
-Requires:	redland >= 1.0.15
-
-%description -n php4-redland
-PHP 4.x bindings for Redland RDF library.
-
-%description -n php4-redland -l pl.UTF-8
-Interfejs PHP 4.x do biblioteki Redland RDF.
-
-%package -n php-redland
+%package -n %{php_name}-redland
 Summary:	PHP 5.x bindings for Redland RDF library
 Summary(pl.UTF-8):	Interfejs PHP 5.x do biblioteki Redland RDF
 Group:		Libraries
 %{?requires_php_extension}
-Requires:	php(core) >= 5.0.4
 Requires:	redland >= 1.0.15
 
-%description -n php-redland
+%description -n %{php_name}-redland
 PHP 5.x bindings for Redland RDF library.
 
-%description -n php-redland -l pl.UTF-8
+%description -n %{php_name}-redland -l pl.UTF-8
 Interfejs PHP 5.x do biblioteki Redland RDF.
 
 %package -n python-redland
 Summary:	Python bindings for Redland RDF library
 Summary(pl.UTF-8):	Pythonowy interfejs do biblioteki Redland RDF
 Group:		Libraries/Python
+Requires:	python
 Requires:	redland >= 1.0.15
-%pyrequires_eq	python
 
 %description -n python-redland
 Python bindings for Redland RDF library.
@@ -167,8 +147,8 @@ Interfejs języka Ruby do biblioteki Redland RDF.
 	--with-perl \
 	--with-perl-makemaker-args='INSTALLDIRS=vendor OPTIMIZE="%{rpmcflags}"' \
 %if %{with php}
-	PHP_CONFIG=%{_bindir}/php%{?with_php4:4}-config \
-	--with-php=%{_bindir}/php%{?with_php4:4}.cli \
+	PHP_CONFIG=%{_bindir}/php-config \
+	--with-php=%{__php} \
 %endif
 	--with-python \
 	%{?with_ruby:--with-ruby}
@@ -184,7 +164,6 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	pythondir=%{py_sitedir} \
@@ -213,20 +192,12 @@ rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/RDF/Redland/CORE/.packlist
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n php-redland
+%post -n %{php_name}-redland
 %php_webserver_restart
 
-%postun -n php-redland
+%postun -n %{php_name}-redland
 if [ "$1" = 0 ]; then
 	%php_webserver_restart
-fi
-
-%post -n php4-redland
-%php4_webserver_restart
-
-%postun -n php4-redland
-if [ "$1" = 0 ]; then
-	%php4_webserver_restart
 fi
 
 %files
@@ -253,7 +224,7 @@ fi
 %{_mandir}/man3/RDF::Redland*.3pm*
 
 %if %{with php}
-%files -n php%{?with_php4:4}-redland
+%files -n %{php_name}-redland
 %defattr(644,root,root,755)
 %doc docs/php.html
 %config(noreplace) %verify(not md5 mtime size) %{php_sysconfdir}/conf.d/redland.ini
