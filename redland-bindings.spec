@@ -4,20 +4,21 @@
 %bcond_without	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
 
-%define		php_name	php55
+%define		php_name	php%{?php_suffix}
 %include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
-Version:	1.0.16.1
-Release:	5
+Version:	1.0.17.1
+Release:	1
 License:	LGPL v2.1+ or GPL v2+ or Apache v2.0+
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
-# Source0-md5:	62fc463076cb6fef4e922bdb5f2979b9
+# Source0-md5:	b13c3d0e1bf291b071aae73603e70e65
 Patch0:		%{name}-py_sitescriptdir.patch
 Patch1:		%{name}-php.patch
 Patch2:		%{name}-sh.patch
+Patch3:		%{name}-ruby.patch
 URL:		http://librdf.org/bindings/
 BuildRequires:	autoconf >= 2.62
 BuildRequires:	automake >= 1:1.11
@@ -132,6 +133,7 @@ Interfejs języka Ruby do biblioteki Redland RDF.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 # force regeneration
 %{__rm} php/{php_redland.h,redland_wrap.c}
@@ -235,7 +237,8 @@ fi
 %defattr(644,root,root,755)
 %doc docs/python.html docs/pydoc
 %{py_sitescriptdir}/RDF.py[co]
-%attr(755,root,root) %{py_sitedir}/Redland.so
+%{py_sitescriptdir}/Redland.py[co]
+%attr(755,root,root) %{py_sitedir}/_Redland.so
 
 %if %{with ruby}
 %files -n ruby-redland

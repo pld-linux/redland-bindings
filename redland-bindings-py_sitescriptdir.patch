@@ -23,25 +23,27 @@
    AC_MSG_CHECKING(Python LDFLAGS)
    if test "X$PYTHON_LDFLAGS" != X; then
      AC_MSG_RESULT(using user ldflags: $PYTHON_LDFLAGS)
---- redland-bindings-1.0.8.1/python/Makefile.am.orig	2008-07-04 10:36:16.000000000 +0200
-+++ redland-bindings-1.0.8.1/python/Makefile.am	2008-08-25 20:50:20.566120063 +0200
-@@ -37,6 +37,7 @@
- SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
+--- redland-bindings-1.0.17.1/python/Makefile.am.orig	2014-06-22 20:54:16.860247387 +0200
++++ redland-bindings-1.0.17.1/python/Makefile.am	2014-06-22 21:06:07.313565911 +0200
+@@ -47,6 +47,7 @@
+ SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c Redland.py
  
  pythondir=@PYTHON_LIB@
 +pythonscriptdir=@PYTHON_SCRIPT@
- python_DATA=RDF.py Redland$(PYTHON_LIBEXT)
+ python_DATA=RDF.py $(PYTHON_FULL_DYLIB) Redland.py
  
  EXTRA_DIST=README RDF.py \
-@@ -66,9 +67,9 @@
+@@ -76,10 +77,10 @@
  	touch $(PYTHON_PACKAGE)-stamp
  
  install-pythonDATA: $(python_DATA)
 -	$(mkinstalldirs) $(DESTDIR)$(pythondir)
 +	$(mkinstalldirs) $(DESTDIR)$(pythondir) $(DESTDIR)$(pythonscriptdir)
- 	$(INSTALL_PROGRAM) $(PYTHON_PACKAGE)$(PYTHON_LIBEXT) $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE)$(PYTHON_LIBEXT)
+ 	$(INSTALL_PROGRAM) $(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB)
 -	$(INSTALL_DATA) RDF.py $(DESTDIR)$(pythondir)/RDF.py
+-	$(INSTALL_DATA) Redland.py $(DESTDIR)$(pythondir)/Redland.py
 +	$(INSTALL_DATA) RDF.py $(DESTDIR)$(pythonscriptdir)/RDF.py
++	$(INSTALL_DATA) Redland.py $(DESTDIR)$(pythonscriptdir)/Redland.py
  
  uninstall-pythonDATA: $(python_DATA)
- 	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE)$(PYTHON_LIBEXT) $(DESTDIR)$(pythondir)/RDF.py
+ 	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/RDF.{py,pyc} $(DESTDIR)$(pythondir)/Redland.{py,pyc}

@@ -1,0 +1,12 @@
+--- redland-bindings-1.0.17.1/configure.ac.orig	2014-06-22 21:07:26.186897601 +0200
++++ redland-bindings-1.0.17.1/configure.ac	2014-06-22 21:29:51.910202884 +0200
+@@ -369,6 +369,9 @@
+   ruby_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_install_dir_variable']"`
+   ruby_header_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['rubyhdrdir']"`
+   ruby_arch_header_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['rubyarchhdrdir']"`
++  if test -z "$ruby_arch_header_dir_config" ; then
++    ruby_arch_header_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['rubyhdrdir']+'/'+RbConfig::CONFIG['arch']"`
++  fi
+   ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_arch_install_dir_variable']"`
+   librubyarg_shared=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['LIBRUBYARG_SHARED']"`
+   changequote([, ])dnl
