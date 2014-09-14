@@ -137,6 +137,7 @@ Interfejs języka Ruby do biblioteki Redland RDF.
 
 # force regeneration
 %{__rm} php/{php_redland.h,redland_wrap.c}
+%{__rm} perl/CORE_wrap.c
 
 %build
 %{__libtoolize}
