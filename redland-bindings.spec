@@ -221,7 +221,6 @@ fi
 %dir %{perl_vendorarch}/auto/RDF
 %dir %{perl_vendorarch}/auto/RDF/Redland
 %dir %{perl_vendorarch}/auto/RDF/Redland/CORE
-%{perl_vendorarch}/auto/RDF/Redland/CORE/CORE.bs
 %attr(755,root,root) %{perl_vendorarch}/auto/RDF/Redland/CORE/CORE.so
 %{_mandir}/man3/RDF::Redland*.3pm*
 
