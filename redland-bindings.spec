@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	lua	# don't build Lua bindings
-%bcond_without	php	# don't build (any) PHP bindings
+%bcond_with	php	# don't build (any) PHP bindings
 %bcond_without	ruby	# don't build Ruby bindings
 
 %define		php_name	php%{?php_suffix}
@@ -10,7 +10,7 @@ Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
 Version:	1.0.17.1
-Release:	10
+Release:	11
 License:	LGPL v2.1+ or GPL v2+ or Apache v2.0+
 Group:		Libraries
 Source0:	http://download.librdf.org/source/%{name}-%{version}.tar.gz
