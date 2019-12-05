@@ -10,3 +10,12 @@
    ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_arch_install_dir_variable']"`
    librubyarg_shared=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['LIBRUBYARG_SHARED']"`
    changequote([, ])dnl
+@@ -431,7 +431,7 @@
+ 	AC_MSG_ERROR(No such RUBY linking type $ruby_linking)
+ 	;;
+   esac
+-  RUBY_SO_SUFFIX=$php_linking
++  RUBY_SO_SUFFIX=$ruby_linking
+   AC_MSG_CHECKING(Ruby Linking)
+   AC_MSG_RESULT(compile '$RUBY_CFLAGS' link '$RUBY_LDFLAGS' suffix $RUBY_SO_SUFFIX)
+ else
