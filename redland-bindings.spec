@@ -5,7 +5,6 @@
 %bcond_without	ruby	# don't build Ruby bindings
 
 %define		php_name	php%{?php_suffix}
-%include	/usr/lib/rpm/macros.perl
 Summary:	Redland RDF Application Framework Bindings
 Summary(pl.UTF-8):	Wiązania szkieletu aplikacji Redland RDF
 Name:		redland-bindings
