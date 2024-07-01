@@ -144,6 +144,7 @@ Interfejs języka Ruby do biblioteki Redland RDF.
 %{__autoconf}
 %{__automake}
 %configure \
+	PYTHON="%{__python}" \
 	--disable-static \
 	%{?with_lua:--with-lua=lua51} \
 	--with-perl \
